@@ -7,22 +7,29 @@ const cx = classNames.bind(styles);
 
 class Viewer extends React.Component {
   render() {
+    const articles = this.props.articles.map((article, key) => {
+      return (
+        <article key={key} className={cx('article')}>
+          <div className={cx('article-meta')}>{article.createdAt}</div>
+          <div className={cx('article-inner')}>
+            <header className={cx('article-header')}>
+              <h1>{article.title}</h1>
+            </header>
+            <div className={cx('article-entry')}>{article.text}</div>
+            <footer className={cx('article-footer')}></footer>
+          </div>
+        </article>
+      );
+    });
+
     return (
-      <div className={cx('article')}>
-        {this.props.articles.length === 0 &&
-          'empty article'
-        }
-        {this.props.articles.length > 0 &&
-          this.props.articles.map((article, key) => {
-            return (
-              <div key={key}>
-                <h2>{article.title}</h2>
-                <h3>{article.createdAt}</h3>
-                <div>{article.text}</div>
-              </div>
-            );
-          })
-        }
+      <div className={cx('viewer')}>
+        <section id="main">
+          {articles.length === 0 &&
+            'empty article'
+          }
+          {articles}
+        </section>
       </div>
     );
   }
