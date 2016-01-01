@@ -1,16 +1,28 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { updatePath } from 'redux-simple-router';
 import classNames from 'classnames/bind';
-import styles from 'scss/components/_viewer';
+import styles from 'scss/components/viewer';
 
 const cx = classNames.bind(styles);
 
 class Viewer extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.handleEdit = this.handleEdit.bind(this);
+  }
+
   render() {
     const articles = this.props.articles.map((article, key) => {
       return (
         <article key={key} className={cx('article')}>
           <div className={cx('article-meta')}>{article.createdAt}</div>
+          { true && // todo confirm auth
+            <div className={cx('article-edit')}>
+              <button onClick={() => this.handleEdit(article.id)}>edit</button>
+            </div>
+          }
           <div className={cx('article-inner')}>
             <header className={cx('article-header')}>
               <h1>{article.title}</h1>
@@ -33,10 +45,16 @@ class Viewer extends React.Component {
       </div>
     );
   }
+
+  handleEdit(id) {
+    const { dispatch } = this.props;
+    dispatch(updatePath(`/edit/${id}`));
+  }
 }
 
 Viewer.propTypes = {
-  articles: PropTypes.array
+  articles: PropTypes.array,
+  dispatch: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -45,4 +63,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Viewer);
+export default connect(
+  mapStateToProps,
+)(Viewer);

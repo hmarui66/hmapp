@@ -20,7 +20,7 @@ var commonLoaders = [
 
 module.exports = {
     // eval - Each module is executed with eval and //@ sourceURL.
-    devtool: 'eval',
+    devtool: 'eval-source-map',
     // The configuration for the client
     name: 'browser',
     /* The entry point of the bundle

@@ -11,6 +11,14 @@ module.exports = function(app, passport) {
 
   app.get('/article', articles.all);
 
+  app.get('/article/:id', function(req, res) {
+    articles.show(req, res);
+  });
+
+  app.post('/article', function(req, res) {
+    articles.save(req, res);
+  });
+
   // for server side rendering
   app.get('*', function (req, res, next) {
     App(req, res);
