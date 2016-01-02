@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import marked from 'marked';
 
 import { typing, loadArticle, createArticle, saveArticle } from 'actions/article';
+import Article from 'components/Article';
 import styles from 'scss/components/editor';
 
 const cx = classNames.bind(styles);
@@ -30,13 +31,17 @@ class Editor extends React.Component {
   render() {
     const { article } = this.props;
     return (
-      <div>
+      <div className={cx('container')}>
         {article &&
-          <div>
-            <input type="text" className={cx('title')} onChange={event => this.handleTyping(event, 'title')} value={article.title} />
-            <textarea type="text" className={cx('text')} onChange={event => this.handleTyping(event, 'text')} value={article.text} />
-            <div dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
-            <button onClick={this.handleSubmit}>save</button>
+          <div className={cx('wrapper')}>
+            <div className={cx('editor')}>
+              <input type="text" className={cx('title')} onChange={event => this.handleTyping(event, 'title')} value={article.title} />
+              <textarea type="text" className={cx('text')} onChange={event => this.handleTyping(event, 'text')} value={article.text} />
+              <button className={cx('save')} onClick={this.handleSubmit}>save</button>
+            </div>
+            <div className={cx('preview')}>
+              <Article article={article} canEdit={false} />
+            </div>
           </div>
         }
         {!article &&

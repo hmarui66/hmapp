@@ -63,7 +63,7 @@ export function createArticle() {
     type: types.LOADED_ARTICLE,
     id: null,
     title: '',
-    text: '### hello world'
+    text: ''
   };
 }
 

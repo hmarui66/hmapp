@@ -1,46 +1,35 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updatePath } from 'redux-simple-router';
-import marked from 'marked';
 import classNames from 'classnames/bind';
-import styles from 'scss/components/viewer';
-import stylesGm from 'github-markdown-css/github-markdown';
 
-const cx = classNames.bind(Object.assign({}, styles, stylesGm));
+import Article from 'components/Article';
+import styles from 'scss/components/viewer';
+
+const cx = classNames.bind(styles);
 
 class Viewer extends React.Component {
 
   constructor(props) {
     super(props);
+    this.handleNew = this.handleNew.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
   }
 
   render() {
+    const editable = true;
     const articles = this.props.articles.map((article, key) => {
       return (
-        <article key={key} className={cx('article', 'markdown-body')}>
-          <div className={cx('article-inner')}>
-            <header className={cx('article-header')}>
-              <div>
-                <h1>{article.title}</h1>
-                <p className={cx('article-meta')}>{article.createdAt}</p>
-              </div>
-              { true && // todo confirm auth
-                <div className={cx('article-edit')}>
-                  <button onClick={() => this.handleEdit(article.id)}>edit</button>
-                </div>
-              }
-            </header>
-            <div className={cx('article-entry')} dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
-            <footer className={cx('article-footer')}></footer>
-          </div>
-        </article>
+        <Article article={article} canEdit={editable} onEdit={this.handleEdit} key={key} />
       );
     });
 
     return (
       <div className={cx('viewer')}>
-        <section id="main">
+        {editable &&
+          <button onClick={this.handleNew}>new</button>
+        }
+        <section>
           {articles.length === 0 &&
             'empty article'
           }
@@ -48,6 +37,11 @@ class Viewer extends React.Component {
         </section>
       </div>
     );
+  }
+
+  handleNew() {
+    const { dispatch } = this.props;
+    dispatch(updatePath('/new'));
   }
 
   handleEdit(id) {

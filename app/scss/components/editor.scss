@@ -1,0 +1,33 @@
+@import 'mixins.scss';
+@import 'settings.scss';
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.wrapper {
+  display: flex;
+}
+
+.editor {
+  flex: 1;
+
+  * {
+    display: block;
+    width: 100%;
+  }
+
+  .text {
+    min-height: 500px;
+  }
+
+  .save {
+    margin-top: 30px;
+  }
+}
+
+.preview {
+  flex: 1;
+}
