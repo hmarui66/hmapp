@@ -58,6 +58,9 @@ module.exports = {
     },
     module: {
       loaders: commonLoaders.concat([
+        { test: /\.css$/,
+          loader: 'style!css?module&localIdentName=[local]__[hash:base64:5]&sourceMap'
+        },
         { test: /\.scss$/,
           loader: 'style!css?module&localIdentName=[local]__[hash:base64:5]' +
             '&sourceMap!autoprefixer-loader!sass?sourceMap&outputStyle=expanded' +
@@ -66,7 +69,7 @@ module.exports = {
       ])
     },
     resolve: {
-      extensions: ['', '.js', '.jsx', '.scss'],
+      extensions: ['', '.js', '.jsx', '.scss', '.css'],
       modulesDirectories: [
         'app', 'node_modules'
       ]

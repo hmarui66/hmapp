@@ -4,8 +4,9 @@ import { updatePath } from 'redux-simple-router';
 import marked from 'marked';
 import classNames from 'classnames/bind';
 import styles from 'scss/components/viewer';
+import stylesGm from 'github-markdown-css/github-markdown';
 
-const cx = classNames.bind(styles);
+const cx = classNames.bind(Object.assign({}, styles, stylesGm));
 
 class Viewer extends React.Component {
 
@@ -17,16 +18,18 @@ class Viewer extends React.Component {
   render() {
     const articles = this.props.articles.map((article, key) => {
       return (
-        <article key={key} className={cx('article')}>
-          <div className={cx('article-meta')}>{article.createdAt}</div>
-          { true && // todo confirm auth
-            <div className={cx('article-edit')}>
-              <button onClick={() => this.handleEdit(article.id)}>edit</button>
-            </div>
-          }
+        <article key={key} className={cx('article', 'markdown-body')}>
           <div className={cx('article-inner')}>
             <header className={cx('article-header')}>
-              <h1>{article.title}</h1>
+              <div>
+                <h1>{article.title}</h1>
+                <p className={cx('article-meta')}>{article.createdAt}</p>
+              </div>
+              { true && // todo confirm auth
+                <div className={cx('article-edit')}>
+                  <button onClick={() => this.handleEdit(article.id)}>edit</button>
+                </div>
+              }
             </header>
             <div className={cx('article-entry')} dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
             <footer className={cx('article-footer')}></footer>

@@ -18,8 +18,11 @@ var commonLoaders = [
   { test: /\.json$/, loader: "json-loader" },
   { test: /\.png$/, loader: "url-loader" },
   { test: /\.jpg$/, loader: "file-loader" },
+  { test: /\.css$/,
+    loader: ExtractTextPlugin.extract('style-loader', 'css-loader?module&localIdentName=[local]__[hash:base64:5]')
+  },
   { test: /\.scss$/,
-    loader: ExtractTextPlugin.extract('style-loader', 'css-loader?module&localIdentName=[local]__[hash:base64:5]!autoprefixer-loader!sass?includePaths[]=' 
+    loader: ExtractTextPlugin.extract('style-loader', 'css-loader?module&localIdentName=[local]__[hash:base64:5]!autoprefixer-loader!sass?includePaths[]='
       + encodeURIComponent(path.resolve(__dirname, '..', 'app', 'scss')))
   }
 ];
@@ -62,7 +65,7 @@ module.exports = [
       publicPath: publicPath
 
     },
-    
+
     module: {
       preLoaders: [{
         test: /\.js$|\.jsx$/,
@@ -72,7 +75,7 @@ module.exports = [
       loaders: commonLoaders
     },
     resolve: {
-      extensions: ['', '.js', '.jsx', '.scss'],
+      extensions: ['', '.js', '.jsx', '.scss', '.css'],
       modulesDirectories: [
         "app", "node_modules"
       ]
@@ -111,7 +114,7 @@ module.exports = [
       loaders: commonLoaders
     },
     resolve: {
-      extensions: ['', '.js', '.jsx', '.scss'],
+      extensions: ['', '.js', '.jsx', '.scss', '.css'],
       modulesDirectories: [
         "app", "node_modules"
       ]
