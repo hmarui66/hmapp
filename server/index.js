@@ -1,3 +1,5 @@
+require('dotenv').load();
+
 var express = require('express');
 var fs = require('fs');
 var mongoose = require('mongoose');

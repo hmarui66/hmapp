@@ -31,6 +31,7 @@
     "cookie-session": "^1.1.0",
     "css-loader": "^0.23.0",
     "deep-equal": "^1.0.1",
+    "dotenv": "^1.2.0",
     "es6-promise": "^3.0.2",
     "eslint": "^0.22.1",
     "eslint-loader": "^0.12.0",
