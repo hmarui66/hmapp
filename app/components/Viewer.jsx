@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updatePath } from 'redux-simple-router';
+import marked from 'marked';
 import classNames from 'classnames/bind';
 import styles from 'scss/components/viewer';
 
@@ -27,7 +28,7 @@ class Viewer extends React.Component {
             <header className={cx('article-header')}>
               <h1>{article.title}</h1>
             </header>
-            <div className={cx('article-entry')}>{article.text}</div>
+            <div className={cx('article-entry')} dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
             <footer className={cx('article-footer')}></footer>
           </div>
         </article>

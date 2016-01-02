@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
+import marked from 'marked';
 
 import { typing, loadArticle, createArticle, saveArticle } from 'actions/article';
 import styles from 'scss/components/editor';
@@ -34,6 +35,7 @@ class Editor extends React.Component {
           <div>
             <input type="text" className={cx('title')} onChange={event => this.handleTyping(event, 'title')} value={article.title} />
             <textarea type="text" className={cx('text')} onChange={event => this.handleTyping(event, 'text')} value={article.text} />
+            <div dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
             <button onClick={this.handleSubmit}>save</button>
           </div>
         }
