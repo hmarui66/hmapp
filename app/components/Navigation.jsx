@@ -10,7 +10,7 @@ class Navigation extends Component {
     return (
       <nav className={styles.navigation} role="navigation">
           <Link to="/" className={styles.navigation__item + ' ' + styles['navigation__item--logo']} activeClassName={styles['navigation__item--active']}>HM APP</Link>
-          {!authenticated &&
+          {authenticated &&
             <Link className={styles.navigation__item} to="/signup">Signup</Link>
           }
           {!authenticated &&
