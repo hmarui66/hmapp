@@ -79,7 +79,8 @@ export default function render(req, res) {
           // reducer: {initialState}
           article: {
             articles: apiResult
-          }
+          },
+          user: { authenticated }
         });
         const initialState = store.getState();
         const renderedContent = renderToString(

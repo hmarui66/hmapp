@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import marked from 'marked';
 import classNames from 'classnames/bind';
 import styles from 'scss/components/article';
@@ -25,7 +26,7 @@ export default class Article extends React.Component {
         <div className={cx('article-inner')}>
           <header className={cx('article-header')}>
             <div>
-              <h1>{article.title}</h1>
+              <h1><Link className={styles.navigation__item} to={`/show/${article.id}`}>{article.title}</Link></h1>
               <p className={cx('article-meta')}>{article.createdAt}</p>
             </div>
             { canEdit &&
