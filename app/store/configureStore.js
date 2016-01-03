@@ -19,7 +19,6 @@ if (canUseDOM) {
 } else {
   createStoreWithMiddleware = compose(
     applyMiddleware(thunk),
-    applyMiddleware(createLogger()),
     devTools()
   )(createStore);
 }

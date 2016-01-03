@@ -73,15 +73,21 @@ export default function render(req, res) {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
+      const authenticated = req.isAuthenticated();
+
+      let api = 'article';
+      const result = req.url.match(/^\/show\/([0-9]+)$/);
+      const isShow = result && result.length > 1;
+      if (isShow) {
+        api += `/${result[1]}`;
+      }
+
       fetchArticles(apiResult => {
-        const authenticated = req.isAuthenticated();
         const store = configureStore({
-          // reducer: {initialState}
-          article: {
-            articles: apiResult
-          },
-          user: { authenticated }
+          user: { authenticated },
+          article : { [isShow ? 'article' : 'articles'] : apiResult }
         });
+
         const initialState = store.getState();
         const renderedContent = renderToString(
         <Provider store={store}>
@@ -93,7 +99,7 @@ export default function render(req, res) {
           link: headconfig.link
         });
         res.status(200).send(renderedPage);
-      });
+      }, api);
     } else {
       res.status(404).send('Not Found');
     }
