@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
-import marked from 'marked';
 
 import { typing, loadArticle, createArticle, saveArticle } from 'actions/article';
 import Article from 'components/Article';

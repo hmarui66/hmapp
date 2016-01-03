@@ -17,16 +17,16 @@ class Viewer extends React.Component {
   }
 
   render() {
-    const editable = true;
+    const { authenticated } = this.props.user;
     const articles = this.props.articles.map((article, key) => {
       return (
-        <Article article={article} canEdit={editable} onEdit={this.handleEdit} key={key} />
+        <Article article={article} canEdit={authenticated} onEdit={this.handleEdit} key={key} />
       );
     });
 
     return (
       <div className={cx('viewer')}>
-        {editable &&
+        {authenticated &&
           <button onClick={this.handleNew}>new</button>
         }
         <section>
@@ -51,12 +51,14 @@ class Viewer extends React.Component {
 }
 
 Viewer.propTypes = {
+  user: PropTypes.object,
   articles: PropTypes.array,
   dispatch: PropTypes.func
 };
 
 function mapStateToProps(state) {
   return {
+    user: state.user,
     articles: state.article.articles
   };
 }

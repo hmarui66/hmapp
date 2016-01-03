@@ -2,12 +2,17 @@
  * Routes for express app
  */
 var articles = require('../controllers/articles');
+var users = require('../controllers/users');
 var express = require('express');
 var mongoose = require('mongoose');
 var _ = require('lodash');
 var App = require('../../public/assets/app.server');
 
 module.exports = function(app, passport) {
+  // user routes
+  app.post('/login', users.postLogin);
+  app.post('/signup', users.postSignUp);
+  app.get('/logout', users.getLogout);
 
   app.get('/article', articles.all);
 

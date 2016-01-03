@@ -2,13 +2,19 @@ import React from 'react';
 import Route from 'react-router';
 
 import App from 'components/App';
+import Login from 'components/Login';
+import Signup from 'components/Signup';
 import Viewer from 'components/Viewer';
 import Editor from 'components/Editor';
+
+import { requireAuthentication } from 'components/authenticateComponent';
 
 export default (
   <Route component={App}>
     <Route path="/" component={Viewer} />
-    <Route path="new" component={Editor} />
-    <Route path="edit/:id" component={Editor} />
+    <Route path="login" component={Login} />
+    <Route path="signup" component={Signup} />
+    <Route path="new" component={requireAuthentication(Editor)} />
+    <Route path="edit/:id" component={(Editor)} />
   </Route>
 );

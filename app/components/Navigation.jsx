@@ -6,9 +6,19 @@ import styles from 'scss/components/navigation';
 class Navigation extends Component {
 
   render() {
+    const { authenticated } = this.props.user;
     return (
       <nav className={styles.navigation} role="navigation">
           <Link to="/" className={styles.navigation__item + ' ' + styles['navigation__item--logo']} activeClassName={styles['navigation__item--active']}>HM APP</Link>
+          {!authenticated &&
+            <Link className={styles.navigation__item} to="/signup">Signup</Link>
+          }
+          {!authenticated &&
+            <Link className={styles.navigation__item} to="/login">Login</Link>
+          }
+          {authenticated &&
+            <Link className={styles.navigation__item} to="/logout">Logout</Link>
+          }
       </nav>
     );
   }
@@ -16,7 +26,14 @@ class Navigation extends Component {
 }
 
 Navigation.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  user: PropTypes.object,
+  dispatch: PropTypes.func
 };
 
-export default connect()(Navigation);
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+export default connect(mapStateToProps)(Navigation);
