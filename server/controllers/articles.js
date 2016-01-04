@@ -8,7 +8,7 @@ var Article = mongoose.model('Article');
  * List
  */
 exports.all = function(req, res) {
-  Article.find({}).exec(function(err, articles) {
+  Article.find({}).sort({ createdAt: 'desc'}).exec(function(err, articles) {
     if(!err) {
       res.json(articles);
     }else {
