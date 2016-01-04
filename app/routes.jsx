@@ -15,8 +15,8 @@ export default (
     <Route path="/" component={Viewer} />
     <Route path="login" component={Login} />
     <Route path="signup" component={requireAuthentication(Signup)} />
-    <Route path="show/:id" component={(Show)} />
+    <Route path="show/:id" component={Show} />
     <Route path="new" component={requireAuthentication(Editor)} />
-    <Route path="edit/:id" component={(Editor)} />
+    <Route path="edit/:id" component={requireAuthentication(Editor)} />
   </Route>
 );

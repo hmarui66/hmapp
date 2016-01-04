@@ -8,10 +8,18 @@ var mongoose = require('mongoose');
 var _ = require('lodash');
 var App = require('../../public/assets/app.server');
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
 module.exports = function(app, passport) {
   // user routes
   app.post('/login', users.postLogin);
-  app.post('/signup', users.postSignUp);
+  app.post('/signup', ensureAuthenticated, users.postSignUp);
   app.get('/logout', users.getLogout);
 
   app.get('/article', articles.all);
@@ -20,7 +28,7 @@ module.exports = function(app, passport) {
     articles.show(req, res);
   });
 
-  app.post('/article', function(req, res) {
+  app.post('/article', ensureAuthenticated, function(req, res) {
     articles.save(req, res);
   });
 
