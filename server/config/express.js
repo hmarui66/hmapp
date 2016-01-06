@@ -75,9 +75,9 @@ module.exports = function (app, passport) {
 
   var node_env = process.env.NODE_ENV;
   console.log('Environment: ' + node_env);
-  if(node_env === 'production') {
-    sess.cookie.secure = true; // Serve secure cookies
-  }
+  // if(node_env === 'production') {
+  //   sess.cookie.secure = true; // Serve secure cookies
+  // }
 
   app.use(session(sess));
 
