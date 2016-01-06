@@ -19,7 +19,10 @@ const clientConfig = {
 function fetchArticles(callback, api='article') {
   fetch(`http://${clientConfig.host}:${clientConfig.port}/${api}`)
     .then(res => res.json())
-    .then(json => callback(json));
+    .then(json => callback(json))
+    .catch(function(error) {
+      console.log('request failed', error);
+    });
 };
 
 
@@ -80,6 +83,9 @@ export default function render(req, res) {
       const isShow = result && result.length > 1;
       if (isShow) {
         api += `/${result[1]}`;
+      } else if (authenticated) {
+        api += '/all';
+        console.log(api);
       }
 
       fetchArticles(apiResult => {

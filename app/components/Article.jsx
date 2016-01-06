@@ -27,7 +27,12 @@ export default class Article extends React.Component {
           <header className={cx('article-header')}>
             <div>
               <h1><Link className={styles.navigation__item} to={`/show/${article.id}`}>{article.title}</Link></h1>
-              <p className={cx('article-meta')}>{article.createdAt}</p>
+              <p className={cx('article-meta')}>
+                {article.createdAt}
+                {!article.published &&
+                  <span>(非公開)</span>
+                }
+              </p>
             </div>
             { canEdit &&
               <div className={cx('article-edit')}>

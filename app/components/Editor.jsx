@@ -34,8 +34,9 @@ class Editor extends React.Component {
         {article &&
           <div className={cx('wrapper')}>
             <div className={cx('editor')}>
-              <input type="text" className={cx('title')} onChange={event => this.handleTyping(event, 'title')} value={article.title} />
-              <textarea type="text" className={cx('text')} onChange={event => this.handleTyping(event, 'text')} value={article.text} />
+              <input type="text" className={cx('title')} onChange={event => this.handleTyping('title', event.target.value)} value={article.title} />
+              <textarea type="text" className={cx('text')} onChange={event => this.handleTyping('text', event.target.value)} value={article.text} />
+              <label><input type="checkbox" className={cx('published')} onChange={event => this.handleTyping('published', event.target.checked)} checked={article.published} />公開</label>
               <button className={cx('save')} onClick={this.handleSubmit}>save</button>
             </div>
             <div className={cx('preview')}>
@@ -50,9 +51,9 @@ class Editor extends React.Component {
     );
   }
 
-  handleTyping(event, field) {
+  handleTyping(field, value) {
     const { dispatch } = this.props;
-    dispatch(typing(field, event.target.value));
+    dispatch(typing(field, value));
   }
 
   handleSubmit() {

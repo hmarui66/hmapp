@@ -22,7 +22,8 @@ module.exports = function(app, passport) {
   app.post('/signup', ensureAuthenticated, users.postSignUp);
   app.get('/logout', users.getLogout);
 
-  app.get('/article', articles.all);
+  app.get('/article', articles.published);
+  app.get('/article/all', ensureAuthenticated, articles.all);
 
   app.get('/article/:id', function(req, res) {
     articles.show(req, res);

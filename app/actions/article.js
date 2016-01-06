@@ -18,7 +18,8 @@ function makeArticleRequest(method, data, api='/article') {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    }
+    },
+    credentials: 'include',
   };
 
   if (method !== 'get') {
@@ -34,10 +35,10 @@ function loading() {
 }
 
 function loaded(article) {
-  const { id, title, text } = article;
+  const { id, title, text, published } = article;
   return {
     type: types.LOADED_ARTICLE,
-    id, title, text
+    id, title, text, published
   };
 }
 
@@ -53,7 +54,7 @@ export function loadArticle(id) {
         return res.json();
       })
       .then(article => {
-          dispatch(loaded(article));
+        dispatch(loaded(article));
       });
   };
 }
@@ -63,7 +64,8 @@ export function createArticle() {
     type: types.LOADED_ARTICLE,
     id: null,
     title: '',
-    text: ''
+    text: '',
+    published: false,
   };
 }
 

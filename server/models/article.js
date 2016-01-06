@@ -8,6 +8,7 @@ var ArticleSchema = new mongoose.Schema({
   id: String,
   title: String,
   text: String,
+  published: Boolean,
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -17,6 +17,16 @@ exports.all = function(req, res) {
   });
 };
 
+exports.published = function(req, res) {
+  Article.find({ published: true}).sort({ createdAt: 'desc'}).exec(function(err, articles) {
+    if(!err) {
+      res.json(articles);
+    }else {
+      console.log('Error in first query');
+    }
+  });
+};
+
 /**
  * Show
  */
