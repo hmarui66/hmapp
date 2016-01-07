@@ -33,6 +33,8 @@ module.exports = function(app, passport) {
     articles.save(req, res);
   });
 
+  app.delete('/article', ensureAuthenticated, articles.delete);
+
   // for server side rendering
   app.get('*', function (req, res, next) {
     App(req, res);

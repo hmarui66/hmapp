@@ -1,7 +1,8 @@
 import {
   LOADED_ARTICLES,
   LOADED_ARTICLE,
-  TYPING_ARTICLE } from 'constants/actionTypes';
+  TYPING_ARTICLE,
+  DESTROY_ARTICLE } from 'constants/actionTypes';
 
 export default function article(state = {
   articles: []
@@ -25,6 +26,10 @@ export default function article(state = {
 
       return Object.assign({}, state,
         { article: { ...state.article, [field]: value } }
+      );
+    case DESTROY_ARTICLE:
+      return Object.assign({}, state,
+        { articles: state.articles.filter(a => a.id !== action.id) }
       );
 
     default:

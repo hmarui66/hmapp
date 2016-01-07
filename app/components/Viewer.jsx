@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { updatePath } from 'redux-simple-router';
 import classNames from 'classnames/bind';
 
-import { loadList } from 'actions/article';
+import { loadList, destroyArticle } from 'actions/article';
 import Article from 'components/Article';
 import styles from 'scss/components/viewer';
 
@@ -15,6 +15,7 @@ class Viewer extends React.Component {
     super(props);
     this.handleNew = this.handleNew.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleDestory = this.handleDestory.bind(this);
   }
 
   componentWillMount() {
@@ -31,7 +32,7 @@ class Viewer extends React.Component {
     const { authenticated } = this.props.user;
     const articles = this.props.articles.map((article, key) => {
       return (
-        <Article article={article} canEdit={authenticated} onEdit={this.handleEdit} key={key} />
+        <Article article={article} canEdit={authenticated} onEdit={this.handleEdit} onDelete={this.handleDestory} key={key} />
       );
     });
 
@@ -59,12 +60,18 @@ class Viewer extends React.Component {
     const { dispatch } = this.props;
     dispatch(updatePath(`/edit/${id}`));
   }
+
+  handleDestory(id) {
+    const { dispatch } = this.props;
+    confirm('Are you sure you want delete this article?') && dispatch(destroyArticle(id));
+  }
 }
 
 Viewer.propTypes = {
   user: PropTypes.object,
   articles: PropTypes.array,
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  location: PropTypes.object
 };
 
 function mapStateToProps(state) {

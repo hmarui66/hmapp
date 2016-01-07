@@ -68,3 +68,21 @@ exports.save = function(req, res) {
   }
 
 };
+
+/**
+ * Delete an article
+ */
+exports.delete = function(req, res) {
+  var data = req.body;
+  if (data.id) {
+    var query = { id: req.body.id };
+    Article.remove(query, function(err) {
+      if(err) {
+        console.log('Error on save!');
+        res.status(500).send('We failed to delete to due some reason');
+      }
+      res.status(200).send('Delete successfully');
+    });
+  }
+
+};

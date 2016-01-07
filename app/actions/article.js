@@ -19,7 +19,7 @@ function makeArticleRequest(method, data, api='/article') {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    credentials: 'include',
+    credentials: 'include'
   };
 
   if (method !== 'get') {
@@ -42,8 +42,8 @@ function loadedList(articles) {
       title: article.title,
       text: article.text,
       published: article.published,
-      createdAt: article.createdAt,
-    })),
+      createdAt: article.createdAt
+    }))
   };
 }
 
@@ -95,7 +95,7 @@ export function createArticle() {
     id: null,
     title: '',
     text: '',
-    published: false,
+    published: false
   };
 }
 
@@ -113,10 +113,6 @@ function saving() {
   };
 }
 
-function destroy(index) {
-  return { type: types.DESTROY_ARTICLE, index: index};
-}
-
 export function saveArticle(data) {
   const { title, text } = data;
 
@@ -128,13 +124,18 @@ export function saveArticle(data) {
   };
 }
 
-export function destroyArticle(id, index) {
-  return dispatch => {
-    dispatch(destroy(index));
+function destroy(id) {
+  return {
+    type: types.DESTROY_ARTICLE,
+    id
+  };
+}
 
-    return makeArticleRequest('delete', {
-      id: id
-    });
+export function destroyArticle(id) {
+  return dispatch => {
+    dispatch(destroy(id));
+
+    return makeArticleRequest('delete', { id });
   };
 }
 

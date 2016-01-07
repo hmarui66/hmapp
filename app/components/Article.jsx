@@ -12,6 +12,7 @@ export default class Article extends React.Component {
   constructor(props) {
     super(props);
     this.onEdit = this.onEdit.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   onEdit() {
@@ -19,11 +20,22 @@ export default class Article extends React.Component {
     this.props.onEdit(article.id);
   }
 
+  onDelete() {
+    const { article } = this.props;
+    this.props.onDelete(article.id);
+  }
+
   render() {
     const { article, canEdit } = this.props;
     return (
       <article className={cx('article', 'markdown-body')}>
         <div className={cx('article-inner')}>
+          { canEdit &&
+            <div className={cx('article-edit')}>
+              <button onClick={this.onEdit}>edit</button>
+              <button onClick={this.onDelete}>destory</button>
+            </div>
+          }
           <header className={cx('article-header')}>
             <div>
               <h1><Link className={styles.navigation__item} to={`/show/${article.id}`}>{article.title}</Link></h1>
@@ -34,11 +46,6 @@ export default class Article extends React.Component {
                 }
               </p>
             </div>
-            { canEdit &&
-              <div className={cx('article-edit')}>
-                <button onClick={this.onEdit}>edit</button>
-              </div>
-            }
           </header>
           <div className={cx('article-entry')} dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
           <footer className={cx('article-footer')}></footer>
@@ -52,5 +59,6 @@ export default class Article extends React.Component {
 Article.propTypes = {
   article: PropTypes.object,
   canEdit: PropTypes.bool,
-  onEdit: PropTypes.func
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func
 };
