@@ -21,6 +21,7 @@ function makeUserRequest(method, data, api='/login') {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     },
+    credentials: 'include',
     body: JSON.stringify(data)
   });
 }
