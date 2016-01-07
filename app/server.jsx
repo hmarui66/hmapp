@@ -83,9 +83,6 @@ export default function render(req, res) {
       const isShow = result && result.length > 1;
       if (isShow) {
         api += `/${result[1]}`;
-      } else if (authenticated) {
-        api += '/all';
-        console.log(api);
       }
 
       fetchArticles(apiResult => {

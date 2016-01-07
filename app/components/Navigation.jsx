@@ -11,13 +11,13 @@ class Navigation extends Component {
       <nav className={styles.navigation} role="navigation">
           <Link to="/" className={styles.navigation__item + ' ' + styles['navigation__item--logo']} activeClassName={styles['navigation__item--active']}>HM APP</Link>
           {authenticated &&
-            <Link className={styles.navigation__item} to="/signup">Signup</Link>
-          }
-          {!authenticated &&
-            <Link className={styles.navigation__item} to="/login">Login</Link>
+            <Link className={styles.navigation__item} to="/all">All</Link>
           }
           {authenticated &&
-            <Link className={styles.navigation__item} to="/logout">Logout</Link>
+            <Link className={styles.navigation__item} to="/signup">Signup</Link>
+          }
+          {authenticated &&
+            <a className={styles.navigation__item} href="/logout">Logout</a>
           }
       </nav>
     );

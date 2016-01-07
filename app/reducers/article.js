@@ -1,4 +1,5 @@
 import {
+  LOADED_ARTICLES,
   LOADED_ARTICLE,
   TYPING_ARTICLE } from 'constants/actionTypes';
 
@@ -6,6 +7,11 @@ export default function article(state = {
   articles: []
 }, action) {
   switch (action.type) {
+    case LOADED_ARTICLES:
+      const { articles} = action;
+      return Object.assign({}, state,
+        { articles }
+      );
     case LOADED_ARTICLE:
       const { id, title, text, published } = action;
       return Object.assign({}, state,

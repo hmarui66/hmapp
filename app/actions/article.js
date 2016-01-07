@@ -34,6 +34,36 @@ function loading() {
   };
 }
 
+function loadedList(articles) {
+  return {
+    type: types.LOADED_ARTICLES,
+    articles: articles.map(article => ({
+      id: article.id,
+      title: article.title,
+      text: article.text,
+      published: article.published,
+      createdAt: article.createdAt,
+    })),
+  };
+}
+
+export function loadList(api='/article') {
+  return dispatch => {
+    dispatch(loading());
+
+    makeArticleRequest('get', null, api)
+      .then(res => {
+        if (res.status >= 400) {
+            throw new Error('Bad response from server');
+        }
+        return res.json();
+      })
+      .then(articles => {
+        dispatch(loadedList(articles));
+      });
+  };
+}
+
 function loaded(article) {
   const { id, title, text, published } = article;
   return {

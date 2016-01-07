@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { updatePath } from 'redux-simple-router';
 import classNames from 'classnames/bind';
 
+import { loadList } from 'actions/article';
 import Article from 'components/Article';
 import styles from 'scss/components/viewer';
 
@@ -14,6 +15,16 @@ class Viewer extends React.Component {
     super(props);
     this.handleNew = this.handleNew.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+  }
+
+  componentWillMount() {
+    const { dispatch, location } = this.props;
+    const { pathname } = location;
+    if (pathname && pathname === '/all') {
+      dispatch(loadList('/article/all'));
+    } else {
+      dispatch(loadList());
+    }
   }
 
   render() {
