@@ -49,21 +49,21 @@ exports.save = function(req, res) {
     var query = { id: req.body.id };
     var omitKeys = ['id', '_id', '_v'];
     data = _.omit(data, omitKeys);
-    Article.findOneAndUpdate(query, data, function(err, data) {
+    Article.findOneAndUpdate(query, data, function(err, article) {
       if(err) {
         console.log('Error on save!');
         res.status(500).send('We failed to save to due some reason');
       }
-      res.status(200).send('Updated successfully');
+      res.json(article);
     });
   } else {
     data = _.set(data, 'id', moment().format('x'));
-    Article.create(data, function (err) {
+    Article.create(data, function (err, article) {
       if (err) {
         console.log(err);
         res.status(400).send(err);
       }
-      res.status(200).send('Added successfully');
+      res.json(article);
     });
   }
 

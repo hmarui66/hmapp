@@ -29,27 +29,32 @@ export default class Article extends React.Component {
     const { article, canEdit } = this.props;
     return (
       <article className={cx('article', 'markdown-body')}>
-        <div className={cx('article-inner')}>
-          { canEdit &&
-            <div className={cx('article-edit')}>
-              <button onClick={this.onEdit}>edit</button>
-              <button onClick={this.onDelete}>destory</button>
-            </div>
-          }
-          <header className={cx('article-header')}>
-            <div>
-              <h1><Link className={styles.navigation__item} to={`/show/${article.id}`}>{article.title}</Link></h1>
-              <p className={cx('article-meta')}>
-                {article.createdAt}
-                {!article.published &&
-                  <span>(非公開)</span>
-                }
-              </p>
-            </div>
-          </header>
-          <div className={cx('article-entry')} dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
-          <footer className={cx('article-footer')}></footer>
-        </div>
+        {article &&
+          <div className={cx('article-inner')}>
+            { canEdit &&
+              <div className={cx('article-edit')}>
+                <button onClick={this.onEdit}>edit</button>
+                <button onClick={this.onDelete}>destory</button>
+              </div>
+            }
+            <header className={cx('article-header')}>
+              <div>
+                <h1><Link className={styles.navigation__item} to={`/show/${article.id}`}>{article.title}</Link></h1>
+                <p className={cx('article-meta')}>
+                  {article.createdAt}
+                  {!article.published &&
+                    <span>(非公開)</span>
+                  }
+                </p>
+              </div>
+            </header>
+            <div className={cx('article-entry')} dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
+            <footer className={cx('article-footer')}></footer>
+          </div>
+        }
+        {!article &&
+          <div>loading</div>
+        }
       </article>
     );
   }

@@ -113,6 +113,13 @@ function saving() {
   };
 }
 
+function saved(id) {
+  return {
+    type: types.SAVED_ARTICLE,
+    id
+  };
+}
+
 export function saveArticle(data) {
   const { title, text } = data;
 
@@ -120,7 +127,16 @@ export function saveArticle(data) {
     if (title.trim().length <= 0 || text.trim().length <= 0) return;
     dispatch(saving());
 
-    makeArticleRequest('post', data);
+    makeArticleRequest('post', data)
+      .then(res => {
+        if (res.status >= 400) {
+            throw new Error('Bad response from server');
+        }
+        return res.json();
+      })
+      .then(article => {
+        dispatch(saved(article.id));
+      });
   };
 }
 

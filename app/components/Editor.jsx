@@ -29,6 +29,7 @@ class Editor extends React.Component {
 
   render() {
     const { article } = this.props;
+    const { saving = false } = article || {};
     return (
       <div className={cx('container')}>
         {article &&
@@ -37,7 +38,7 @@ class Editor extends React.Component {
               <input type="text" className={cx('title')} onChange={event => this.handleTyping('title', event.target.value)} value={article.title} />
               <textarea type="text" className={cx('text')} onChange={event => this.handleTyping('text', event.target.value)} value={article.text} />
               <label><input type="checkbox" className={cx('published')} onChange={event => this.handleTyping('published', event.target.checked)} checked={article.published} />公開</label>
-              <button className={cx('save')} onClick={this.handleSubmit}>save</button>
+              <button className={cx('save')} onClick={this.handleSubmit} disabled={saving}>save</button>
             </div>
             <div className={cx('preview')}>
               <Article article={article} canEdit={false} />
