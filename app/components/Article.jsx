@@ -26,7 +26,7 @@ export default class Article extends React.Component {
   }
 
   render() {
-    const { article, canEdit } = this.props;
+    const { loading, article, canEdit } = this.props;
     return (
       <article className={cx('article', 'markdown-body')}>
         {article &&
@@ -52,8 +52,11 @@ export default class Article extends React.Component {
             <footer className={cx('article-footer')}></footer>
           </div>
         }
-        {!article &&
+        {loading &&
           <div>loading</div>
+        }
+        {!loading && !article &&
+          <div>not found</div>
         }
       </article>
     );
@@ -62,6 +65,7 @@ export default class Article extends React.Component {
 }
 
 Article.propTypes = {
+  loading: PropTypes.bool,
   article: PropTypes.object,
   canEdit: PropTypes.bool,
   onEdit: PropTypes.func,

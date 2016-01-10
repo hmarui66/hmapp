@@ -3,6 +3,7 @@
  *
  */
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 
 var ArticleSchema = new mongoose.Schema({
   id: String,
@@ -11,6 +12,7 @@ var ArticleSchema = new mongoose.Schema({
   published: Boolean,
   createdAt: { type: Date, default: Date.now },
 });
+ArticleSchema.plugin(mongoosePaginate);
 
 Article = mongoose.model('Article', ArticleSchema);
 

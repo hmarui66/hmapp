@@ -3,29 +3,34 @@ var _ = require('lodash');
 var moment = require('moment');
 var Article = mongoose.model('Article');
 
+const paginateOptions = {
+  sort: { createdAt: 'desc' },
+  limit: 2
+};
 
 /**
  * List
  */
 exports.all = function(req, res) {
-  Article.find({}).sort({ createdAt: 'desc'}).exec(function(err, articles) {
-    if(!err) {
-      res.json(articles);
-    }else {
-      console.log('Error in first query');
-    }
-  });
+  loadList(req, res, {});
 };
 
 exports.published = function(req, res) {
-  Article.find({ published: true}).sort({ createdAt: 'desc'}).exec(function(err, articles) {
+  loadList(req, res, { published: true });
+};
+
+function loadList(req, res, query) {
+  if (req.query && req.query.page && parseInt(req.query.page)) {
+    paginateOptions.page = parseInt(req.query.page);
+  }
+  Article.paginate(query, paginateOptions, function(err, articles) {
     if(!err) {
       res.json(articles);
     }else {
       console.log('Error in first query');
     }
   });
-};
+}
 
 /**
  * Show

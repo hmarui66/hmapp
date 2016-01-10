@@ -12,8 +12,8 @@ import { requireAuthentication } from 'components/authenticateComponent';
 
 export default (
   <Route component={App}>
-    <Route path="/" component={Viewer} />
-    <Route path="/all" component={requireAuthentication(Viewer)} />
+    <Route path="/(?:query)" component={Viewer} />
+    <Route path="/all(?:query)" component={requireAuthentication(Viewer)} />
     <Route path="login" component={Login} />
     <Route path="signup" component={requireAuthentication(Signup)} />
     <Route path="show/:id" component={Show} />

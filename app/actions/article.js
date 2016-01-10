@@ -37,17 +37,11 @@ function loading() {
 function loadedList(articles) {
   return {
     type: types.LOADED_ARTICLES,
-    articles: articles.map(article => ({
-      id: article.id,
-      title: article.title,
-      text: article.text,
-      published: article.published,
-      createdAt: article.createdAt
-    }))
+    articles
   };
 }
 
-export function loadList(api='/article') {
+export function loadList(api) {
   return dispatch => {
     dispatch(loading());
 
@@ -58,8 +52,8 @@ export function loadList(api='/article') {
         }
         return res.json();
       })
-      .then(articles => {
-        dispatch(loadedList(articles));
+      .then(data => {
+        dispatch(loadedList(data));
       });
   };
 }

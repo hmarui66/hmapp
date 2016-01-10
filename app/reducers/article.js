@@ -8,23 +8,26 @@ import {
   DESTROY_ARTICLE } from 'constants/actionTypes';
 
 export default function article(state = {
-  articles: []
+  articles: [],
+  article: null,
+  loading: false
 }, action) {
   switch (action.type) {
     case LOADING_ARTICLE:
       return Object.assign({}, state, {
           articles: [],
-          article: null
+          article: null,
+          loading: true
       });
     case LOADED_ARTICLES:
-      const { articles} = action;
+      const { articles } = action;
       return Object.assign({}, state,
-        { articles }
+        { articles, loading: false }
       );
     case LOADED_ARTICLE:
       const { id, title, text, published } = action;
       return Object.assign({}, state,
-        { article: { id, title, text, published, saving: false } }
+        { article: { id, title, text, published, saving: false }, loading: false }
       );
     case TYPING_ARTICLE:
       const { field, value } = action;
