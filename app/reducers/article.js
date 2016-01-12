@@ -15,8 +15,6 @@ export default function article(state = {
   switch (action.type) {
     case LOADING_ARTICLE:
       return Object.assign({}, state, {
-          articles: [],
-          article: null,
           loading: true
       });
     case LOADED_ARTICLES:

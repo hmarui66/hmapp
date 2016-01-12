@@ -5,7 +5,7 @@ var Article = mongoose.model('Article');
 
 const paginateOptions = {
   sort: { createdAt: 'desc' },
-  limit: 2
+  limit: 10
 };
 
 /**
