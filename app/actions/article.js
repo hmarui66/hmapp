@@ -59,10 +59,9 @@ export function loadList(api) {
 }
 
 function loaded(article) {
-  const { id, title, text, published } = article;
   return {
     type: types.LOADED_ARTICLE,
-    id, title, text, published
+    ...article
   };
 }
 
