@@ -8,7 +8,7 @@ class Header extends React.Component {
   render() {
     return (
       <Helmet
-        title="App for myself"
+        title="Spending my free time"
         meta={config.meta}
         link={config.link}
       />

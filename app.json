@@ -1,6 +1,6 @@
 {
   "name": "hmapp",
-  "description": "App for myself",
+  "description": "Spending my free time",
   "repository": "https://github.com/hmarui66/hmapp",
   "logo": "https://node-js-sample.herokuapp.com/node.svg",
   "keywords": ["node", "express", "static", "react", "webpack", "mongodb"],

@@ -9,7 +9,7 @@ class Navigation extends Component {
     const { authenticated } = this.props.user;
     return (
       <nav className={styles.navigation} role="navigation">
-          <Link to="/" className={styles.navigation__item + ' ' + styles['navigation__item--logo']} activeClassName={styles['navigation__item--active']}>HM APP</Link>
+          <Link to="/" className={styles.navigation__item + ' ' + styles['navigation__item--logo']} activeClassName={styles['navigation__item--active']}>hmarui66 blog</Link>
           {authenticated &&
             <Link className={styles.navigation__item} to="/all">All</Link>
           }
