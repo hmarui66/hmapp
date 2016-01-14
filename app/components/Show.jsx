@@ -23,7 +23,7 @@ class Show extends React.Component {
   }
 
   render() {
-    const { article, loading } = this.props;
+    const { article, loading = false } = this.props;
     return (
       <div className={cx('container')}>
         {article &&
@@ -47,7 +47,8 @@ class Show extends React.Component {
 Show.propTypes = {
   dispatch: PropTypes.func,
   params: PropTypes.object,
-  article: PropTypes.object
+  article: PropTypes.object,
+  loading: PropTypes.bool
 };
 
 function mapStateToProps(state) {

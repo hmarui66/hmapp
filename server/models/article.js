@@ -3,6 +3,7 @@
  *
  */
 var mongoose = require('mongoose');
+var timestamps = require('mongoose-timestamp');
 var mongoosePaginate = require('mongoose-paginate');
 
 var ArticleSchema = new mongoose.Schema({
@@ -10,8 +11,8 @@ var ArticleSchema = new mongoose.Schema({
   title: String,
   text: String,
   published: Boolean,
-  createdAt: { type: Date, default: Date.now },
 });
+ArticleSchema.plugin(timestamps);
 ArticleSchema.plugin(mongoosePaginate);
 
 Article = mongoose.model('Article', ArticleSchema);

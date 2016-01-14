@@ -69,7 +69,8 @@ class Editor extends React.Component {
 Editor.propTypes = {
   dispatch: PropTypes.func,
   params: PropTypes.object,
-  article: PropTypes.object
+  article: PropTypes.object,
+  loading: PropTypes.bool
 };
 
 function mapStateToProps(state) {

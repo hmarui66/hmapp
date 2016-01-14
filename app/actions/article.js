@@ -61,7 +61,7 @@ export function loadList(api) {
 function loaded(article) {
   return {
     type: types.LOADED_ARTICLE,
-    ...article
+    article
   };
 }
 
@@ -85,10 +85,12 @@ export function loadArticle(id) {
 export function createArticle() {
   return {
     type: types.LOADED_ARTICLE,
-    id: null,
-    title: '',
-    text: '',
-    published: false
+    article: {
+      id: null,
+      title: '',
+      text: '',
+      published: false
+    }
   };
 }
 

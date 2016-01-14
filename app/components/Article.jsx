@@ -2,10 +2,12 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import marked from 'marked';
 import classNames from 'classnames/bind';
+import moment from 'moment';
 import styles from 'scss/components/article';
 import stylesGm from 'github-markdown-css/github-markdown';
 
 const cx = classNames.bind(Object.assign({}, styles, stylesGm));
+const format = 'Do MMMM, YYYY';
 
 export default class Article extends React.Component {
 
@@ -27,6 +29,12 @@ export default class Article extends React.Component {
 
   render() {
     const { loading, article, canEdit } = this.props;
+    let createdAt;
+    let updatedAt;
+    if (article) {
+      createdAt = moment(article.createdAt);
+      updatedAt = moment(article.updatedAt);
+    }
     return (
       <article className={cx('article', 'markdown-body')}>
         {article &&
@@ -41,9 +49,13 @@ export default class Article extends React.Component {
               <div>
                 <h1><Link className={styles.navigation__item} to={`/show/${article.id}`}>{article.title}</Link></h1>
                 <p className={cx('article-meta')}>
-                  {article.createdAt}
                   {!article.published &&
-                    <span>(非公開)</span>
+                    <span>[非公開]</span>
+                  }
+                  <span>{createdAt.format(format)}</span>
+                  {!createdAt.isSame(updatedAt) &&
+                    <span> (updated: {updatedAt.format(format)})</span>
+
                   }
                 </p>
               </div>

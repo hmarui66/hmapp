@@ -24,7 +24,7 @@ export default function article(state = {
       );
     case LOADED_ARTICLE:
       return Object.assign({}, state,
-        { article: { ...action, saving: false }, loading: false }
+        { article: { ...action.article, saving: false }, loading: false }
       );
     case TYPING_ARTICLE:
       const { field, value } = action;
