@@ -96,12 +96,13 @@ Viewer.propTypes = {
 };
 
 function mapStateToProps(state) {
+  const { articles = {} } = state.article;
   const {
     docs = [],
     page = 0,
     pages = 0,
     total = 0
-  } = state.article.articles;
+  } = articles;
 
   return {
     loading: state.article.loading,

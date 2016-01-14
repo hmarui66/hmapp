@@ -23,7 +23,7 @@ class Show extends React.Component {
   }
 
   render() {
-    const { article } = this.props;
+    const { article, loading } = this.props;
     return (
       <div className={cx('container')}>
         {article &&
@@ -33,7 +33,10 @@ class Show extends React.Component {
             </div>
           </div>
         }
-        {!article &&
+        {loading &&
+          <div>loading</div>
+        }
+        {!loading && !article &&
           <div>not found</div>
         }
       </div>

@@ -28,7 +28,7 @@ class Editor extends React.Component {
   }
 
   render() {
-    const { article } = this.props;
+    const { article, loading } = this.props;
     const { saving = false } = article || {};
     return (
       <div className={cx('container')}>
@@ -44,6 +44,9 @@ class Editor extends React.Component {
               <Article article={article} canEdit={false} />
             </div>
           </div>
+        }
+        {loading &&
+          <div>loading</div>
         }
         {!article &&
           <div>not found</div>
