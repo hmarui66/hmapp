@@ -3,11 +3,6 @@ var _ = require('lodash');
 var moment = require('moment');
 var Article = mongoose.model('Article');
 
-const paginateOptions = {
-  sort: { createdAt: 'desc' },
-  limit: 10
-};
-
 /**
  * List
  */
@@ -20,9 +15,23 @@ exports.published = function(req, res) {
 };
 
 function loadList(req, res, query) {
-  if (req.query && req.query.page && parseInt(req.query.page)) {
-    paginateOptions.page = parseInt(req.query.page);
+  var paginateOptions = {
+    sort: { createdAt: 'desc' },
+    limit: 10
+  };
+
+  if (req.query) {
+    if (req.query.page && parseInt(req.query.page)) {
+      paginateOptions.page = parseInt(req.query.page);
+    }
+    if (req.query.category) {
+      query.category = req.query.category;
+    }
+    if (req.query.tags) {
+      query.tags = req.query.tags;
+    }
   }
+
   Article.paginate(query, paginateOptions, function(err, articles) {
     if(!err) {
       res.json(articles);

@@ -36,11 +36,11 @@ class Viewer extends React.Component {
   }
 
   render() {
-    const { loading = false, articles = [], paginateOption = {} } = this.props;
+    const { loading = false, articles = [], paginateOption = {}, location } = this.props;
     const { authenticated } = this.props.user;
     const articleDoms = articles.map((article, key) => {
       return (
-        <Article loading={loading} article={article} canEdit={authenticated} onEdit={this.handleEdit} onDelete={this.handleDestory} key={key} />
+        <Article isAll={this.isAll()} loading={loading} article={article} canEdit={authenticated} onEdit={this.handleEdit} onDelete={this.handleDestory} key={key} />
       );
     });
 
@@ -58,14 +58,14 @@ class Viewer extends React.Component {
           }
           {articleDoms}
         </section>
-        <Paginate baseUrl={this.isAll() ? '/all' : ''} option={paginateOption} />
+        <Paginate baseUrl={this.isAll() ? '/all' : ''} query={location.query} option={paginateOption} />
       </div>
     );
   }
 
   isAll() {
     const { location } = this.props;
-    return location.pathname && location.pathname.match(/^\/all/);
+    return location.pathname && !!location.pathname.match(/^\/all/);
   }
 
   handleNew() {

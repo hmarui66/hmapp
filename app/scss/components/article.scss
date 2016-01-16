@@ -24,16 +24,24 @@
     margin-bottom: 0;
     padding-bottom: 0;
   }
-  > div > p {
+  .article-timestamp {
     font-size: 0.8em;
     color: rgb(158, 171, 179);
     margin-bottom: 0;
   }
 }
 
+.article-tag {
+  margin-left: 10px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
 .article-entry {
   color: #555;
-  padding: 0 20px;
+  padding: 10px 20px;
 }
 
 .article-footer {

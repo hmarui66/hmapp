@@ -8,15 +8,17 @@ const cx = classNames.bind(styles);
 export default class Paginate extends Component {
   constructor(props) {
     super(props);
+    this.renderLink = this.renderLink.bind(this);
   }
 
   renderLink(url, page, selectedPage, caption = null) {
+    const { query } = this.props;
     let classes = ['paginate-item'];
     if (page === selectedPage) {
       classes.push('selected');
     }
     return (
-      <Link className={cx(classes)} to={url} query={{ page }} key={page}>{caption ? caption : page}</Link>
+      <Link className={cx(classes)} to={url} query={{ ...query, page }} key={page}>{caption ? caption : page}</Link>
     );
   }
 
@@ -45,5 +47,6 @@ export default class Paginate extends Component {
 
 Paginate.propTypes = {
   baseUrl: PropTypes.string,
+  query: PropTypes.object,
   option: PropTypes.object
 };

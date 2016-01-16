@@ -14,6 +14,7 @@ class Editor extends React.Component {
     super(props);
 
     this.handleTyping = this.handleTyping.bind(this);
+    this.handleTypingTags = this.handleTypingTags.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -29,19 +30,22 @@ class Editor extends React.Component {
 
   render() {
     const { article, loading } = this.props;
-    const { saving = false } = article || {};
+    const { saving = false, tags = [] } = article || {};
+    const tagsText = tags.join(' ');
     return (
       <div className={cx('container')}>
         {article &&
           <div className={cx('wrapper')}>
             <div className={cx('editor')}>
-              <input type="text" className={cx('title')} onChange={event => this.handleTyping('title', event.target.value)} value={article.title} />
-              <textarea type="text" className={cx('text')} onChange={event => this.handleTyping('text', event.target.value)} value={article.text} />
+              <input type="text" className={cx('title')} onChange={event => this.handleTyping('title', event.target.value)} value={article.title} placeholder="title" />
+              <input type="text" className={cx('category')} onChange={event => this.handleTyping('category', event.target.value)} value={article.category} placeholder="category" />
+              <input type="text" className={cx('tags')} onChange={event => this.handleTypingTags(event.target.value)} value={tagsText} placeholder="tags" />
+              <textarea type="text" className={cx('text')} onChange={event => this.handleTyping('text', event.target.value)} value={article.text} placeholder="text" />
               <label><input type="checkbox" className={cx('published')} onChange={event => this.handleTyping('published', event.target.checked)} checked={article.published} />公開</label>
               <button className={cx('save')} onClick={this.handleSubmit} disabled={saving}>save</button>
             </div>
             <div className={cx('preview')}>
-              <Article article={article} canEdit={false} />
+              <Article isAll={true} article={article} canEdit={false} />
             </div>
           </div>
         }
@@ -58,6 +62,11 @@ class Editor extends React.Component {
   handleTyping(field, value) {
     const { dispatch } = this.props;
     dispatch(typing(field, value));
+  }
+
+  handleTypingTags(value) {
+    const tags = value.split(' ');
+    this.handleTyping('tags', tags);
   }
 
   handleSubmit() {

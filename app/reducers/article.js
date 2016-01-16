@@ -7,6 +7,14 @@ import {
   SAVED_ARTICLE,
   DESTROY_ARTICLE } from 'constants/actionTypes';
 
+const inputFields = [
+  'title',
+  'text',
+  'category',
+  'tags',
+  'published'
+];
+
 export default function article(state = {
   articles: [],
   article: null,
@@ -28,7 +36,7 @@ export default function article(state = {
       );
     case TYPING_ARTICLE:
       const { field, value } = action;
-      if (field !== 'title' && field !== 'text' && field !== 'published') {
+      if (!inputFields.includes(field)) {
         return state;
       }
 

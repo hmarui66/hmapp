@@ -15,6 +15,7 @@ export default class Article extends React.Component {
     super(props);
     this.onEdit = this.onEdit.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.renderTags = this.renderTags.bind(this);
   }
 
   onEdit() {
@@ -27,8 +28,18 @@ export default class Article extends React.Component {
     this.props.onDelete(article.id);
   }
 
+  renderTags(tag, key) {
+    const { isAll = false } = this.props;
+    return (
+      <Link to={(isAll ? '/all' : '/' ) + `?tags=${tag}`} className={cx('article-tag')} key={key}>
+        <i className="fa fa-tag"></i>
+        {tag}
+      </Link>
+    );
+  }
+
   render() {
-    const { loading, article, canEdit } = this.props;
+    const { loading, article, canEdit, isAll = false } = this.props;
     let createdAt;
     let updatedAt;
     if (article) {
@@ -48,16 +59,27 @@ export default class Article extends React.Component {
             <header className={cx('article-header')}>
               <div>
                 <h1><Link className={styles.navigation__item} to={`/show/${article.id}`}>{article.title}</Link></h1>
-                <p className={cx('article-meta')}>
-                  {!article.published &&
-                    <span>[非公開]</span>
+                <div>
+                  <p className={cx('article-timestamp')}>
+                    {!article.published &&
+                      <span>[非公開]</span>
+                    }
+                    <span>{createdAt.format(format)}</span>
+                    {!createdAt.isSame(updatedAt) &&
+                      <span> (updated: {updatedAt.format(format)})</span>
+                    }
+                  </p>
+                  {(article.category || article.tags) &&
+                    <p>
+                      {article.category &&
+                        <Link to={(isAll ? '/all' : '/' ) + `?category=${article.category}`} >{article.category}</Link>
+                      }
+                      {article.tags && Array.isArray(article.tags) &&
+                        article.tags.map(this.renderTags)
+                      }
+                    </p>
                   }
-                  <span>{createdAt.format(format)}</span>
-                  {!createdAt.isSame(updatedAt) &&
-                    <span> (updated: {updatedAt.format(format)})</span>
-
-                  }
-                </p>
+                </div>
               </div>
             </header>
             <div className={cx('article-entry')} dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
@@ -77,6 +99,7 @@ export default class Article extends React.Component {
 }
 
 Article.propTypes = {
+  isAll: PropTypes.bool,
   loading: PropTypes.bool,
   article: PropTypes.object,
   canEdit: PropTypes.bool,
