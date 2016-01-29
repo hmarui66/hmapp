@@ -11,14 +11,14 @@ export default class Paginate extends Component {
     this.renderLink = this.renderLink.bind(this);
   }
 
-  renderLink(url, page, selectedPage, caption = null) {
+  renderLink(pathname, page, selectedPage, caption = null) {
     const { query } = this.props;
     let classes = ['paginate-item'];
     if (page === selectedPage) {
       classes.push('selected');
     }
     return (
-      <Link className={cx(classes)} to={url} query={{ ...query, page }} key={page}>{caption ? caption : page}</Link>
+      <Link className={cx(classes)} to={{pathname, query: { ...query, page }}} key={page}>{caption ? caption : page}</Link>
     );
   }
 
@@ -26,7 +26,7 @@ export default class Paginate extends Component {
     const { baseUrl, option = {} } = this.props;
     const {
       page = 0,
-      pages = 0,
+      pages = 0
     } = option;
 
     return (

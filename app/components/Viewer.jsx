@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updatePath } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 import classNames from 'classnames/bind';
 
 import { loadList, destroyArticle } from 'actions/article';
@@ -70,12 +70,12 @@ class Viewer extends React.Component {
 
   handleNew() {
     const { dispatch } = this.props;
-    dispatch(updatePath('/new'));
+    dispatch(routeActions.push('/new'));
   }
 
   handleEdit(id) {
     const { dispatch } = this.props;
-    dispatch(updatePath(`/edit/${id}`));
+    dispatch(routeActions.push(`/edit/${id}`));
   }
 
   handleDestory(id) {

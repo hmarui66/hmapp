@@ -14,7 +14,7 @@ import * as types from 'constants/actionTypes';
  * @param String endpoint - defaults to /login
  * @return Promise
  */
-function makeUserRequest(method, data, api='/login') {
+function makeUserRequest(method, data, api = '/login') {
   return fetch(api, {
     method: method,
     headers: {

@@ -12,7 +12,7 @@ import * as types from 'constants/actionTypes';
  * @param String endpoint
  * @return Promise
  */
-function makeArticleRequest(method, data, api='/article') {
+function makeArticleRequest(method, data, api = '/article') {
   const req = {
     method,
     headers: {

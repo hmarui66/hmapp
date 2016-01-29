@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { RoutingContext, match } from 'react-router'
+import { RouterContext, match } from 'react-router'
 import createLocation from 'history/lib/createLocation';
 import fetch from 'isomorphic-fetch';
 import { Provider } from 'react-redux';
@@ -17,7 +17,7 @@ const clientConfig = {
 // Fetch and call the callback function after the response
 // is converted to returned and converted to json
 function fetchArticles(callback, api='article') {
-  fetch(`http://${clientConfig.host}:${clientConfig.port}/${api}`)
+  return fetch(`http://${clientConfig.host}:${clientConfig.port}/${api}`)
     .then(res => res.json())
     .then(json => callback(json))
     .catch(function(error) {
@@ -94,7 +94,7 @@ export default function render(req, res) {
         const initialState = store.getState();
         const renderedContent = renderToString(
         <Provider store={store}>
-          <RoutingContext {...renderProps} />
+          <RouterContext {...renderProps} />
         </Provider>);
         const renderedPage = renderFullPage(renderedContent, initialState, {
           title: headconfig.title,
@@ -102,7 +102,9 @@ export default function render(req, res) {
           link: headconfig.link
         });
         res.status(200).send(renderedPage);
-      }, api);
+      }, api).catch(error => {
+        res.status(500).send(error.message);
+      })
     } else {
       res.status(404).send('Not Found');
     }

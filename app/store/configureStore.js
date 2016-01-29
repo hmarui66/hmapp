@@ -1,30 +1,36 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import rootReducer from 'reducers';
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
+import reducers from 'reducers';
+import { syncHistory, routeReducer } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { devTools } from 'redux-devtools';
+import DevTools from '../createDevToolsWindow';
 
 const canUseDOM = !!(
   (typeof window !== 'undefined' &&
   window.document && window.document.createElement)
 );
 
-let createStoreWithMiddleware;
+const reducer = combineReducers(Object.assign({}, reducers, {
+  routing: routeReducer
+}));
+
+let enhancer;
 if (canUseDOM) {
-  createStoreWithMiddleware = compose(
-    applyMiddleware(thunk),
-    applyMiddleware(createLogger()),
-    devTools()
-  )(createStore);
+  const reduxRouterMiddleware = syncHistory(browserHistory);
+  enhancer = compose(
+    applyMiddleware(thunk, reduxRouterMiddleware, createLogger()),
+    DevTools.instrument()
+  );
 } else {
-  createStoreWithMiddleware = compose(
+  enhancer = compose(
     applyMiddleware(thunk),
-    devTools()
-  )(createStore);
+    DevTools.instrument()
+  );
 }
 
 export default function configureStore(initialState) {
-  const store = createStoreWithMiddleware(rootReducer, initialState);
+  const store = createStore(reducer, initialState, enhancer);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

@@ -9,9 +9,9 @@ import {
   LOGOUT_SUCCESS_USER,
   LOGOUT_ERROR_USER } from 'constants/actionTypes';
 
-export default function user(state={
+export default function user(state = {
   isWaiting: false,
-  authenticated: false }, action={}) {
+  authenticated: false }, action = {}) {
   switch (action.type) {
     case MANUAL_LOGIN_USER:
       return Object.assign({}, state, {

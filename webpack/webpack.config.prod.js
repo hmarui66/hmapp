@@ -81,6 +81,9 @@ module.exports = [
       ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"'
+        }),
         // Order the modules and chunks by occurrence.
         // This saves space, because often referenced modules
         // and chunks get smaller ids.
@@ -120,6 +123,9 @@ module.exports = [
       ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"'
+        }),
         // Order the modules and chunks by occurrence.
         // This saves space, because often referenced modules
         // and chunks get smaller ids.

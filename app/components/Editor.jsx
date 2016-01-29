@@ -31,6 +31,7 @@ class Editor extends React.Component {
   render() {
     const { article, loading } = this.props;
     const { saving = false, tags = [] } = article || {};
+    const articleConfig = { isAll: true, canEdit: false };
     const tagsText = tags.join(' ');
     return (
       <div className={cx('container')}>
@@ -45,7 +46,7 @@ class Editor extends React.Component {
               <button className={cx('save')} onClick={this.handleSubmit} disabled={saving}>save</button>
             </div>
             <div className={cx('preview')}>
-              <Article isAll={true} article={article} canEdit={false} />
+              <Article article={article} { ...articleConfig } />
             </div>
           </div>
         }
