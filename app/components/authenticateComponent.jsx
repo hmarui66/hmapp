@@ -5,6 +5,14 @@ import { routeActions } from 'react-router-redux';
 export function requireAuthentication(Component) {
   class AuthenticateComponent extends React.Component {
 
+    static fetchData(locals) {
+      return Component.fetchData ? Component.fetchData(locals) : null;
+    }
+
+    static redirectPathForLogin() {
+      return '/login';
+    }
+
     constructor(props) {
       super(props);
     }
@@ -12,7 +20,7 @@ export function requireAuthentication(Component) {
     componentWillMount() {
       const { isAuthenticated, dispatch } = this.props;
       if (!isAuthenticated) {
-        dispatch(routeActions.push(`/login?next=${this.props.location.pathname}`));
+        dispatch(routeActions.push(AuthenticateComponent.redirectPathForLogin() + `?next=${this.props.location.pathname}`));
       }
     }
 
@@ -31,7 +39,6 @@ export function requireAuthentication(Component) {
 
   function mapStateToProps(state) {
     return {
-      token: state.user.token,
       isAuthenticated: state.user.authenticated
     };
   }

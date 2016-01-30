@@ -10,11 +10,19 @@ const cx = classNames.bind(styles);
 
 class Show extends React.Component {
 
+  static fetchData({ dispatch, params = {}, context = {} }) {
+    const { id = null } = params;
+    return dispatch(loadArticle(id, context));
+  }
+
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
+    if (!this.props.didMount) {
+      return;
+    }
     const { dispatch, params = {} } = this.props;
     const { id = null } = params;
     if (id) {
@@ -45,6 +53,7 @@ class Show extends React.Component {
 }
 
 Show.propTypes = {
+  didMount: PropTypes.bool,
   dispatch: PropTypes.func,
   params: PropTypes.object,
   article: PropTypes.object,
@@ -53,6 +62,7 @@ Show.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    didMount: state.app.didMount,
     article: state.article.article
   };
 }

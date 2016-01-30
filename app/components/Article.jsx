@@ -31,7 +31,7 @@ export default class Article extends React.Component {
   renderTags(tag, key) {
     const { isAll = false } = this.props;
     return (
-      <Link to={(isAll ? '/all' : '/' ) + `?tags=${tag}`} className={cx('article-tag')} key={key}>
+      <Link to={{ pathname: (isAll ? '/all' : '/' ), query: { tags: tag } }} className={cx('article-tag')} key={key}>
         <i className="fa fa-tag"></i>
         {tag}
       </Link>
@@ -72,7 +72,7 @@ export default class Article extends React.Component {
                   {(article.category || article.tags) &&
                     <p>
                       {article.category &&
-                        <Link to={(isAll ? '/all' : '/' ) + `?category=${article.category}`} >{article.category}</Link>
+                        <Link to={{ pathname: (isAll ? '/all' : '/' ), query: { category: article.category } }} >{article.category}</Link>
                       }
                       {article.tags && Array.isArray(article.tags) &&
                         article.tags.map(this.renderTags)

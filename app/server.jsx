@@ -2,7 +2,6 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { RouterContext, match } from 'react-router'
 import createLocation from 'history/lib/createLocation';
-import fetch from 'isomorphic-fetch';
 import { Provider } from 'react-redux';
 import routes from 'routes.jsx';
 import configureStore from 'store/configureStore';
@@ -13,25 +12,6 @@ const clientConfig = {
   port: process.env.PORT || '3000'
 };
 
-
-// Fetch and call the callback function after the response
-// is converted to returned and converted to json
-function fetchArticles(callback, api='article') {
-  return fetch(`http://${clientConfig.host}:${clientConfig.port}/${api}`)
-    .then(res => res.json())
-    .then(json => callback(json))
-    .catch(function(error) {
-      console.log('request failed', error);
-    });
-};
-
-
-/*
- * Our html template file
- * @param {String} renderedContent
- * @param initial state of the store, so that the client can be hydrated with the same state as the server
- * @param head - optional arguments to be placed into the head
- */
 function renderFullPage(renderedContent, initialState, head={
   title: 'Spending my free time',
   meta: '<meta name="viewport" content="width=device-width, initial-scale=1" />',
@@ -61,36 +41,32 @@ function renderFullPage(renderedContent, initialState, head={
   `;
 }
 
-/*
- * Export render function to be used in server/config/routes.js
- * We grab the state passed in from the server and the req object from Express/Koa
- * and pass it into the Router.run function.
- */
 export default function render(req, res) {
+  const authenticated = req.isAuthenticated();
 
-  // Note that req.url here should be the full URL path from
-  // the original request, including the query string.
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    const requireAuthComponents = renderProps.components.filter(component => component.redirectPathForLogin);
+
     if (error) {
       res.status(500).send(error.message);
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (!authenticated && requireAuthComponents.length > 0) {
+      res.redirect(302, requireAuthComponents[0].redirectPathForLogin());
     } else if (renderProps) {
-      const authenticated = req.isAuthenticated();
+      const store = configureStore({ user: { authenticated } });
 
-      let api = 'article';
-      const result = req.url.match(/^\/show\/([0-9]+)$/);
-      const isShow = result && result.length > 1;
-      if (isShow) {
-        api += `/${result[1]}`;
-      }
+      const locals = {
+        path: renderProps.location.pathname,
+        query: renderProps.location.query,
+        params: renderProps.params,
+        dispatch: store.dispatch,
+        context: req
+      };
 
-      fetchArticles(apiResult => {
-        const store = configureStore({
-          user: { authenticated },
-          article : { [isShow ? 'article' : 'articles'] : apiResult }
-        });
+      const components = renderProps.components.filter(component => component.fetchData);
 
+      Promise.all(components.map(component => component.fetchData(locals))).then(() => {
         const initialState = store.getState();
         const renderedContent = renderToString(
         <Provider store={store}>
@@ -102,9 +78,10 @@ export default function render(req, res) {
           link: headconfig.link
         });
         res.status(200).send(renderedPage);
-      }, api).catch(error => {
+      }).catch(error => {
         res.status(500).send(error.message);
       })
+
     } else {
       res.status(404).send('Not Found');
     }

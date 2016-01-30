@@ -170,6 +170,8 @@
     "react/sort-comp": [2, {
       "order": [
         "displayName",
+        "fetchData",
+        "redirectPathForLogin",
         "constructor",
         "mixins",
         "statics",

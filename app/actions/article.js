@@ -1,6 +1,8 @@
 import { fetchGet, fetchPost, fetchDelete } from 'lib/fetch';
 import * as types from 'constants/actionTypes';
 
+const resource = 'article';
+
 function loading() {
   return {
     type: types.LOADING_ARTICLE
@@ -14,11 +16,20 @@ function loadedList(articles) {
   };
 }
 
-export function loadList(path) {
+export function loadList(path, query = {}, context = {}) {
   return dispatch => {
     dispatch(loading());
 
-    return fetchGet(path).then(res => {
+    let url = resource;
+    if (path) {
+      url += path;
+    }
+
+    return fetchGet({
+      path: url,
+      params: query,
+      context
+    }).then(res => {
       if (res.status >= 400) {
           throw new Error('Bad response from server');
       }
@@ -38,11 +49,14 @@ function loaded(article) {
   };
 }
 
-export function loadArticle(id) {
+export function loadArticle(id, context = {}) {
   return dispatch => {
     dispatch(loading());
 
-    return fetchGet(`article/${id}`).then(res => {
+    return fetchGet({
+      path: `${resource}/${id}`,
+      context
+    }).then(res => {
       if (res.status >= 400) {
           throw new Error('Bad response from server');
       }
@@ -99,7 +113,7 @@ export function saveArticle(data) {
     }
     dispatch(saving());
 
-    return fetchPost('article', data).then(res => {
+    return fetchPost(resource, data).then(res => {
       if (res.status >= 400) {
           throw new Error('Bad response from server');
       }
@@ -123,7 +137,7 @@ export function destroyArticle(id) {
   return dispatch => {
     dispatch(destroy(id));
 
-    return fetchDelete('article', { id });
+    return fetchDelete(resource, { id });
   };
 }
 

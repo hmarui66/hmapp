@@ -12,6 +12,10 @@ const cx = classNames.bind(styles);
 
 class Viewer extends React.Component {
 
+  static fetchData({ dispatch, path = '', query = {}, context = {} }) {
+    return dispatch(loadList(path, query, context));
+  }
+
   constructor(props) {
     super(props);
     this.isAll = this.isAll.bind(this);
@@ -21,17 +25,18 @@ class Viewer extends React.Component {
   }
 
   componentWillMount() {
+    if (!this.props.didMount) {
+      return;
+    }
     const { dispatch, location } = this.props;
-    const { query = {} } = location;
-    dispatch(loadList(this.isAll() ? 'article/all' : 'article', query));
+    dispatch(loadList(location.pathname));
   }
 
   componentWillReceiveProps(nextProps) {
     const { dispatch, location } = this.props;
     const { location: nextLocation } = nextProps;
     if (location.search !== nextLocation.search) {
-      const api = (this.isAll() ? 'article/all' : 'article') + nextLocation.search;
-      dispatch(loadList(api));
+      dispatch(loadList(location.pathname, nextLocation.query));
     }
   }
 
@@ -87,6 +92,7 @@ class Viewer extends React.Component {
 }
 
 Viewer.propTypes = {
+  didMount: PropTypes.bool,
   loading: PropTypes.bool,
   user: PropTypes.object,
   articles: PropTypes.array,
@@ -105,6 +111,7 @@ function mapStateToProps(state) {
   } = articles;
 
   return {
+    didMount: state.app.didMount,
     loading: state.article.loading,
     user: state.user,
     articles: docs,

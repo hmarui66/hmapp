@@ -7,9 +7,9 @@ const clientConfig = {
   port: process.env.PORT || '3000'
 };
 
-const baseUrl = `http://${clientConfig.host}:${clientConfig.port}/`;
+const baseUrl = (process && process.title !== 'browser') ? `http://${clientConfig.host}:${clientConfig.port}/` : '/';
 
-const req = {
+const baseOptions = {
   credentials: 'same-origin',
   headers: {
     'Accept': 'application/json',
@@ -17,14 +17,21 @@ const req = {
   }
 };
 
-export function fetchGet(path, params = {}) {
+export function fetchGet({ path, params = {}, context = {} }) {
   const method = 'GET';
   let url = baseUrl + path;
   if (Object.keys(params).length) {
     url += '?' + qs.stringify(params);
   }
 
-  return fetch(url, { ...req, method });
+  const options = { ...baseOptions, method };
+
+  const { headers } = context;
+  if (headers && headers.cookie) {
+    options.headers = { ...options.headers, cookie: headers.cookie };
+  }
+
+  return fetch(url, options);
 }
 
 export function fetchPost(path, data) {
@@ -32,7 +39,7 @@ export function fetchPost(path, data) {
   let url = baseUrl + path;
   const body = JSON.stringify(data);
 
-  return fetch(url, { ...req, body, method });
+  return fetch(url, { ...baseOptions, body, method });
 }
 
 export function fetchDelete(path, data) {
@@ -40,5 +47,5 @@ export function fetchDelete(path, data) {
   let url = baseUrl + path;
   const body = JSON.stringify(data);
 
-  return fetch(url, { ...req, body, method });
+  return fetch(url, { ...baseOptions, body, method });
 }

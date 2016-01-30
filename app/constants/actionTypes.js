@@ -1,3 +1,5 @@
+export const DID_MOUNT = 'DID_MOUNT';
+
 export const LOADING_ARTICLE = 'LOADING_ARTICLE';
 export const LOADED_ARTICLES = 'LOADED_ARTICLES';
 export const LOADED_ARTICLE = 'LOADED_ARTICLE';
