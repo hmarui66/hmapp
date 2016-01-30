@@ -1,31 +1,6 @@
-// Including es6-promise so isomorphic fetch will work
-import 'es6-promise';
-import fetch from 'isomorphic-fetch';
+import { fetchGet, fetchPost } from 'lib/fetch';
 
 import * as types from 'constants/actionTypes';
-
-// Note this can be extracted out later
-/*
- * Utility function to make AJAX requests using isomorphic fetch.
- * You can also use jquery's $.ajax({}) if you do not want to use the
- * /fetch API.
- * @param Object Data you wish to pass to the server
- * @param String HTTP method, e.g. post, get, put, delete
- * @param String endpoint - defaults to /login
- * @return Promise
- */
-function makeUserRequest(method, data, api = '/login') {
-  return fetch(api, {
-    method: method,
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify(data)
-  });
-}
-
 
 // Log In Action Creators
 function beginLogin() {
@@ -70,14 +45,12 @@ export function manualLogin(data) {
   return dispatch => {
     dispatch(beginLogin());
 
-    return makeUserRequest('post', data, '/login')
-      .then( response => {
-        if (response.status === 200) {
-          dispatch(loginSuccess());
-        } else {
-          dispatch(loginError());
-        }
-      });
+    return fetchPost('login', data).then(res => {
+      const action = res.status === 200 ? loginSuccess : loginError;
+      return dispatch(action());
+    }).catch(error => {
+      throw new Error(error.message);
+    });
   };
 }
 
@@ -85,14 +58,12 @@ export function signUp(data) {
   return dispatch => {
     dispatch(beginSignUp());
 
-    return makeUserRequest('post', data, '/signup')
-      .then( response => {
-        if (response.status === 200) {
-          dispatch(signUpSuccess());
-        } else {
-          dispatch(signUpError());
-        }
-      });
+    return fetchPost('signup', data).then(res => {
+      const action = res.status === 200 ? signUpSuccess : signUpError;
+      return dispatch(action());
+    }).catch(error => {
+      throw new Error(error.message);
+    });
   };
 }
 
@@ -100,20 +71,12 @@ export function logOut() {
   return dispatch => {
     dispatch(beginLogout());
 
-    return fetch('/logout', {
-      method: 'get',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      }
-    })
-      .then( response => {
-        if (response.status === 200) {
-          dispatch(logoutSuccess());
-        } else {
-          dispatch(logoutError());
-        }
-      });
+    fetchGet('logout').then(res => {
+      const action = res.status === 200 ? logoutSuccess : logoutError;
+      return dispatch(action());
+    }).catch(error => {
+      throw new Error(error.message);
+    });
   };
 }
 

@@ -23,14 +23,14 @@ class Viewer extends React.Component {
   componentWillMount() {
     const { dispatch, location } = this.props;
     const { query = {} } = location;
-    dispatch(loadList(this.isAll() ? '/article/all' : '/article', query));
+    dispatch(loadList(this.isAll() ? 'article/all' : 'article', query));
   }
 
   componentWillReceiveProps(nextProps) {
     const { dispatch, location } = this.props;
     const { location: nextLocation } = nextProps;
     if (location.search !== nextLocation.search) {
-      const api = (this.isAll() ? '/article/all' : '/article') + nextLocation.search;
+      const api = (this.isAll() ? 'article/all' : 'article') + nextLocation.search;
       dispatch(loadList(api));
     }
   }

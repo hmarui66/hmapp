@@ -57,7 +57,10 @@ export default function article(state = {
       );
     case DESTROY_ARTICLE:
       return Object.assign({}, state,
-        { articles: state.articles.filter(a => a.id !== action.id) }
+        { articles: {
+          ...state.articles,
+          docs: state.articles.docs.filter(a => a.id !== action.id)}
+        }
       );
 
     default:
