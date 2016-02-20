@@ -1,13 +1,23 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import marked from 'marked';
-import classNames from 'classnames/bind';
 import moment from 'moment';
+import { Link } from 'react-router';
+import RaisedButton from 'material-ui/lib/raised-button';
+import FontIcon from 'material-ui/lib/font-icon';
+import classNames from 'classnames/bind';
 import styles from 'scss/components/article';
 import stylesGm from 'github-markdown-css/github-markdown';
 
 const cx = classNames.bind(Object.assign({}, styles, stylesGm));
 const format = 'Do MMMM, YYYY';
+
+const articleStyles = {
+  fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+  marginTop: 32,
+  marginLeft: 32,
+  marginBottom: 48,
+  marginRight: 32
+};
 
 export default class Article extends React.Component {
 
@@ -32,7 +42,7 @@ export default class Article extends React.Component {
     const { isAll = false } = this.props;
     return (
       <Link to={{ pathname: (isAll ? '/all' : '/' ), query: { tags: tag } }} className={cx('article-tag')} key={key}>
-        <i className="fa fa-tag"></i>
+        <FontIcon className="material-icons" style={{fontSize: 18}}>local_offer</FontIcon>
         {tag}
       </Link>
     );
@@ -47,12 +57,12 @@ export default class Article extends React.Component {
       updatedAt = moment(article.updatedAt);
     }
     return (
-      <article className={cx('article', 'markdown-body')}>
+      <article className={cx('article', 'markdown-body')} style={articleStyles}>
         {article &&
           <div className={cx('article-inner')}>
             { canEdit &&
               <div className={cx('article-edit')}>
-                <button onClick={this.onEdit}>edit</button>
+                <RaisedButton label="edit" onClick={this.onEdit}/>
                 <button onClick={this.onDelete}>destory</button>
               </div>
             }
@@ -83,7 +93,6 @@ export default class Article extends React.Component {
               </div>
             </header>
             <div className={cx('article-entry')} dangerouslySetInnerHTML={{ __html: marked(article.text) }}></div>
-            <footer className={cx('article-footer')}></footer>
           </div>
         }
         {loading &&
