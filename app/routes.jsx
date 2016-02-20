@@ -14,6 +14,23 @@ import Search from 'components/Search';
 
 import { requireAuthentication } from 'components/authenticateComponent';
 
+class NotFound extends React.Component {
+  render() {
+    const styles = {
+      padding: 16
+    };
+    return (
+      <main
+        data-contents="not-found"
+        data-contents-area>
+        <div data-content>
+          <span style={styles}>404 Not Found</span>
+        </div>
+      </main>
+    );
+  }
+}
+
 export default (
   <Route component={App}>
     <Route path="/(?:query)" component={Viewer} />
@@ -27,5 +44,6 @@ export default (
     <Route path="Tags" component={Tags} />
     <Route path="Archive" component={Archive} />
     <Route path="Search" component={Search} />
+    <Route path="*" component={NotFound}/>
   </Route>
 );
