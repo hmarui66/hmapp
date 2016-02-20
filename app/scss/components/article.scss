@@ -2,20 +2,12 @@
 @import 'settings.scss';
 @import 'github-markdown-css/github-markdown.css';
 
-.article {
-  margin: 0 0 50px;
-}
-
 .article-inner {
   overflow: hidden;
   background: #fff;
-  box-shadow: 1px 2px 3px #ddd;
-  border: 1px solid #ddd;
-  border-radius: 3px;
 }
 
 .article-header {
-  padding: 20px 20px 0;
   display: flex;
   justify-content: space-between;
   > div > h1 {
@@ -41,7 +33,6 @@
 
 .article-entry {
   color: #555;
-  padding: 10px 20px;
 }
 
 .article-footer {
@@ -49,5 +40,4 @@
   line-height: 1.6em;
   border-top: 1px solid #ddd;
   padding-top: 1.6em;
-  margin: 0 20px 20px;
 }

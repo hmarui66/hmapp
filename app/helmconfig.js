@@ -18,7 +18,7 @@ const config = {
     { "rel": "icon", "href": favicon },
     { "rel": "stylesheet", "href": "https://fonts.googleapis.com/css?family=Roboto+Condensed", "type": "text/css" },
     { "rel": "stylesheet", "href": "/assets/styles/main.css" },
-    { "rel": "stylesheet", "href": "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" }
+    { "rel": "stylesheet", "href": "https://fonts.googleapis.com/icon?family=Material+Icons" }
     // SEO: If your mobile URL is different from the desktop URL,
     // add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones
     // { "rel": "canonical", "href": "http://www.example.com/" }

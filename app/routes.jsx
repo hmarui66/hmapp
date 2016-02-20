@@ -7,6 +7,10 @@ import Signup from 'components/Signup';
 import Viewer from 'components/Viewer';
 import Show from 'components/Show';
 import Editor from 'components/Editor';
+import Categories from 'components/Categories';
+import Tags from 'components/Tags';
+import Archive from 'components/Archive';
+import Search from 'components/Search';
 
 import { requireAuthentication } from 'components/authenticateComponent';
 
@@ -19,5 +23,9 @@ export default (
     <Route path="show/:id" component={Show} />
     <Route path="new" component={requireAuthentication(Editor)} />
     <Route path="edit/:id" component={requireAuthentication(Editor)} />
+    <Route path="Categories" component={Categories} />
+    <Route path="Tags" component={Tags} />
+    <Route path="Archive" component={Archive} />
+    <Route path="Search" component={Search} />
   </Route>
 );
