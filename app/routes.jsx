@@ -1,5 +1,5 @@
 import React from 'react';
-import Route from 'react-router';
+import { Router, Route } from 'react-router';
 
 import App from 'components/App';
 import Login from 'components/Login';
@@ -32,7 +32,7 @@ class NotFound extends React.Component {
 }
 
 export default (
-  <Route component={App}>
+  <Router component={App}>
     <Route path="/(?:query)" component={Viewer} />
     <Route path="/all(?:query)" component={requireAuthentication(Viewer)} />
     <Route path="login" component={Login} />
@@ -45,5 +45,5 @@ export default (
     <Route path="Archive" component={Archive} />
     <Route path="Search" component={Search} />
     <Route path="*" component={NotFound}/>
-  </Route>
+  </Router>
 );

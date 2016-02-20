@@ -131,12 +131,12 @@ module.exports = [
         // and chunks get smaller ids.
         new webpack.optimize.OccurenceOrderPlugin(),
         // extract inline css from modules into separate files
-        new ExtractTextPlugin("styles/main.css")
-        // new webpack.optimize.UglifyJsPlugin({
-        //   compressor: {
-        //     warnings: false
-        //   }
-        // })
+        new ExtractTextPlugin("styles/main.css"),
+        new webpack.optimize.UglifyJsPlugin({
+          compressor: {
+            warnings: false
+          }
+        })
     ]
   }
 ];
