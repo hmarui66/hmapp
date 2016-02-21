@@ -29,7 +29,7 @@ export default class AppLeftNav extends Component {
           open={open}
           onRequestChange={onRequestChangeLeftNav}
         >
-          <Avatar src={avatarImage} size="128" style={imageStyle} />
+          <Avatar src={avatarImage} size={128} style={imageStyle} />
           <SelectableList
             insetSubheader={true}
             subheader="hmarui66"

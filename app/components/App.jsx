@@ -15,7 +15,8 @@ const App = React.createClass({
   propTypes: {
     dispatch: PropTypes.func,
     children: PropTypes.node,
-    location: PropTypes.object
+    location: PropTypes.object,
+    didMount: PropTypes.bool
   },
 
   getInitialState() {
@@ -32,6 +33,7 @@ const App = React.createClass({
   render() {
     const {
       location,
+      didMount,
       children
     } = this.props;
     let {
@@ -40,7 +42,7 @@ const App = React.createClass({
 
     const styles = {};
     let docked = false;
-    if (this.isDeviceSize(StyleResizable.statics.Sizes.LARGE)) {
+    if (didMount && this.isDeviceSize(StyleResizable.statics.Sizes.LARGE)) {
       styles.paddingLeft = 256;
       docked = true;
       leftNavOpen = true;
@@ -114,4 +116,10 @@ class App extends Component {
 }
 */
 
-export default connect()(App);
+function mapStateToProps(state) {
+  return {
+    didMount: state.app.didMount
+  };
+}
+
+export default connect(mapStateToProps)(App);
