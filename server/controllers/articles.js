@@ -3,17 +3,6 @@ var _ = require('lodash');
 var moment = require('moment');
 var Article = mongoose.model('Article');
 
-/**
- * List
- */
-exports.all = function(req, res) {
-  loadList(req, res, {});
-};
-
-exports.published = function(req, res) {
-  loadList(req, res, { published: true });
-};
-
 function loadList(req, res, query) {
   var paginateOptions = {
     sort: { createdAt: 'desc' },
@@ -40,6 +29,13 @@ function loadList(req, res, query) {
     }
   });
 }
+
+/**
+ * List
+ */
+exports.published = function(req, res) {
+  loadList(req, res, { published: true });
+};
 
 /**
  * Show
@@ -100,3 +96,44 @@ exports.delete = function(req, res) {
   }
 
 };
+
+/**
+ * Draft List
+ */
+exports.drafts = function(req, res) {
+  loadList(req, res, { published: false });
+};
+
+/**
+ * @todo pre countup
+ * Category list
+ */
+ exports.categories = function(req, res) {
+  Article.aggregate().group({
+    _id: '$category',
+    count: {'$sum': 1}
+  }).exec(function (err, categories) {
+    if(err) {
+      console.log('Error on get categories');
+      res.status(500).send('We failed to get categories to due some reason');
+    }
+    res.json(categories);
+  });
+ };
+
+/**
+ * @todo pre countup
+ * Tag list
+ */
+ exports.tags = function(req, res) {
+  Article.aggregate().unwind('tags').group({
+    _id: '$tags',
+    count: {'$sum': 1}
+  }).exec(function (err, categories) {
+    if(err) {
+      console.log('Error on get categories');
+      res.status(500).send('We failed to get categories to due some reason');
+    }
+    res.json(categories);
+  });
+ };

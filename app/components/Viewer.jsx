@@ -18,7 +18,6 @@ class Viewer extends React.Component {
 
   constructor(props) {
     super(props);
-    this.isAll = this.isAll.bind(this);
     this.handleNew = this.handleNew.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleDestory = this.handleDestory.bind(this);
@@ -45,7 +44,7 @@ class Viewer extends React.Component {
     const { authenticated } = this.props.user;
     const articleDoms = articles.map((article, key) => {
       return (
-        <Article isAll={this.isAll()} loading={loading} article={article} canEdit={authenticated} onEdit={this.handleEdit} onDelete={this.handleDestory} key={key} />
+        <Article loading={loading} article={article} canEdit={authenticated} onEdit={this.handleEdit} onDelete={this.handleDestory} key={key} />
       );
     });
 
@@ -63,14 +62,9 @@ class Viewer extends React.Component {
           }
           {articleDoms}
         </section>
-        <Paginate baseUrl={this.isAll() ? '/all' : ''} query={location.query} option={paginateOption} />
+        <Paginate pathname={location.pathname} query={location.query} option={paginateOption} />
       </div>
     );
-  }
-
-  isAll() {
-    const { location } = this.props;
-    return location.pathname && !!location.pathname.match(/^\/all/);
   }
 
   handleNew() {

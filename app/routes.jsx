@@ -33,17 +33,17 @@ class NotFound extends React.Component {
 
 export default (
   <Router component={App}>
-    <Route path="/(?:query)" component={Viewer} />
-    <Route path="/all(?:query)" component={requireAuthentication(Viewer)} />
-    <Route path="login" component={Login} />
-    <Route path="signup" component={requireAuthentication(Signup)} />
+    <Route path="/" component={Viewer} />
     <Route path="show/:id" component={Show} />
     <Route path="new" component={requireAuthentication(Editor)} />
     <Route path="edit/:id" component={requireAuthentication(Editor)} />
-    <Route path="Categories" component={Categories} />
-    <Route path="Tags" component={Tags} />
-    <Route path="Archive" component={Archive} />
-    <Route path="Search" component={Search} />
+    <Route path="categories" component={Categories} />
+    <Route path="tags" component={Tags} />
+    <Route path="archive" component={Archive} />
+    <Route path="search" component={Search} />
+    <Route path="drafts" component={requireAuthentication(Viewer)} />
+    <Route path="login" component={Login} />
+    <Route path="signup" component={requireAuthentication(Signup)} />
     <Route path="*" component={NotFound}/>
   </Router>
 );

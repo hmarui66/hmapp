@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { StyleResizable } from 'material-ui/lib/mixins';
-import { didMount } from 'actions/app';
+import { didMount as didMountAction } from 'actions/app';
 import IconButton from 'material-ui/lib/icon-button';
 import FontIcon from 'material-ui/lib/font-icon';
 import AppLefftNav from 'components/AppLeftNav';
@@ -27,13 +27,14 @@ const App = React.createClass({
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(didMount());
+    dispatch(didMountAction());
   },
 
   render() {
     const {
       location,
       didMount,
+      user,
       children
     } = this.props;
     let {
@@ -55,6 +56,7 @@ const App = React.createClass({
           onRequestChangeLeftNav={this.handleChangeRequestLeftNav}
           onRequestChangeList={this.handleRequestChangeList}
           open={leftNavOpen}
+          authenticated={user.authenticated}
         />
         <div style={styles}>
           {!docked &&
@@ -118,7 +120,8 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    didMount: state.app.didMount
+    didMount: state.app.didMount,
+    user: state.user
   };
 }
 
