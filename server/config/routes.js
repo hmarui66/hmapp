@@ -23,17 +23,16 @@ module.exports = function(app, passport) {
   app.get('/logout', users.getLogout);
 
   app.get('/article', articles.published);
-  app.get('/article/all', ensureAuthenticated, articles.all);
-
-  app.get('/article/:id', function(req, res) {
+  app.get('/article/show/:id', function(req, res) {
     articles.show(req, res);
   });
-
   app.post('/article', ensureAuthenticated, function(req, res) {
     articles.save(req, res);
   });
-
   app.delete('/article', ensureAuthenticated, articles.delete);
+  app.get('/article/categories', articles.categories);
+  app.get('/article/tags', articles.tags);
+  app.get('/article/drafts', ensureAuthenticated, articles.drafts);
 
   // for server side rendering
   app.get('*', function (req, res, next) {

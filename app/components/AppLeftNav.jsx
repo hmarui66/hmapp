@@ -6,6 +6,7 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import {SelectableContainerEnhance} from 'material-ui/lib/hoc/selectable-enhance';
 import avatarImage from 'images/avatar.jpg';
+
 const imageStyle = {
   marginTop: 16,
   marginLeft: 56
@@ -20,7 +21,8 @@ export default class AppLeftNav extends Component {
       location,
       onRequestChangeLeftNav,
       onRequestChangeList,
-      open
+      open,
+      authenticated
     } = this.props;
     return (
       <div>
@@ -29,7 +31,7 @@ export default class AppLeftNav extends Component {
           open={open}
           onRequestChange={onRequestChangeLeftNav}
         >
-          <Avatar src={avatarImage} size="128" style={imageStyle} />
+          <Avatar src={avatarImage} size={128} style={imageStyle} />
           <SelectableList
             insetSubheader={true}
             subheader="hmarui66"
@@ -55,6 +57,12 @@ export default class AppLeftNav extends Component {
               leftIcon={<FontIcon className="material-icons">search</FontIcon>}
               primaryText="Search" value="/search"
             />
+            {authenticated &&
+              <ListItem
+                leftIcon={<FontIcon className="material-icons">drafts</FontIcon>}
+                primaryText="Drafs" value="/drafts"
+              />
+            }
           </SelectableList>
 
         </LeftNav>
@@ -68,5 +76,6 @@ AppLeftNav.propTypes = {
   location: PropTypes.object.isRequired,
   onRequestChangeLeftNav: PropTypes.func,
   onRequestChangeList: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool,
+  authenticated: PropTypes.bool
 };

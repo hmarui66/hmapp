@@ -13,7 +13,7 @@
   border: 1px solid rgb(221, 221, 221);
   padding: 5px 8px;
 
-  .selected {
+  &.selected {
     color: white;
     background-color: rgb(64, 120, 192);
   }

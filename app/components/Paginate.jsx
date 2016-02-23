@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import classNames from 'classnames/bind';
 import styles from 'scss/components/paginate';
-
 const cx = classNames.bind(styles);
+const containerStyles = {
+  marginLeft: 32
+};
 
 export default class Paginate extends Component {
   constructor(props) {
@@ -23,18 +25,18 @@ export default class Paginate extends Component {
   }
 
   render() {
-    const { baseUrl, option = {} } = this.props;
+    const { pathname, option = {} } = this.props;
     const {
       page = 0,
       pages = 0
     } = option;
 
     return (
-      <div className={cx('paginate-container')}>
+      <div style={containerStyles}>
         {pages > 1 &&
           <div className={cx('paginate-list')}>
             {[...Array(pages).keys()].map(num => {
-              return this.renderLink(baseUrl, num + 1, page);
+              return this.renderLink(pathname, num + 1, page);
             })}
           </div>
         }
@@ -46,7 +48,7 @@ export default class Paginate extends Component {
 }
 
 Paginate.propTypes = {
-  baseUrl: PropTypes.string,
+  pathname: PropTypes.string,
   query: PropTypes.object,
   option: PropTypes.object
 };

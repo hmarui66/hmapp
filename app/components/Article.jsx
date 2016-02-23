@@ -39,9 +39,8 @@ export default class Article extends React.Component {
   }
 
   renderTags(tag, key) {
-    const { isAll = false } = this.props;
     return (
-      <Link to={{ pathname: (isAll ? '/all' : '/' ), query: { tags: tag } }} className={cx('article-tag')} key={key}>
+      <Link to={{ pathname: '/', query: { tags: tag } }} className={cx('article-tag')} key={key}>
         <FontIcon className="material-icons" style={{fontSize: 18}}>local_offer</FontIcon>
         {tag}
       </Link>
@@ -49,7 +48,7 @@ export default class Article extends React.Component {
   }
 
   render() {
-    const { loading, article, canEdit, isAll = false } = this.props;
+    const { loading, article, canEdit } = this.props;
     let createdAt;
     let updatedAt;
     if (article) {
@@ -82,7 +81,7 @@ export default class Article extends React.Component {
                   {(article.category || article.tags) &&
                     <p>
                       {article.category &&
-                        <Link to={{ pathname: (isAll ? '/all' : '/' ), query: { category: article.category } }} >{article.category}</Link>
+                        <Link to={{ pathname: '/', query: { category: article.category } }} >{article.category}</Link>
                       }
                       {article.tags && Array.isArray(article.tags) &&
                         article.tags.map(this.renderTags)
@@ -108,7 +107,6 @@ export default class Article extends React.Component {
 }
 
 Article.propTypes = {
-  isAll: PropTypes.bool,
   loading: PropTypes.bool,
   article: PropTypes.object,
   canEdit: PropTypes.bool,

@@ -54,7 +54,7 @@ export function loadArticle(id, context = {}) {
     dispatch(loading());
 
     return fetchGet({
-      path: `${resource}/${id}`,
+      path: `${resource}/show/${id}`,
       context
     }).then(res => {
       if (res.status >= 400) {
@@ -140,4 +140,3 @@ export function destroyArticle(id) {
     return fetchDelete(resource, { id });
   };
 }
-

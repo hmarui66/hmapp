@@ -23,10 +23,22 @@ class Show extends React.Component {
     if (!this.props.didMount) {
       return;
     }
-    const { dispatch, params = {} } = this.props;
+    const { dispatch, params = {}, loading = false } = this.props;
     const { id = null } = params;
+    this.context.shareLoading(loading);
     if (id) {
       dispatch(loadArticle(id));
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { dispatch, location, loading } = this.props;
+    const { location: nextLocation, loading: nextLoading } = nextProps;
+    if (loading !== nextLoading) {
+      this.context.shareLoading(nextLoading);
+    }
+    if (location.search !== nextLocation.search) {
+      dispatch(loadList(location.pathname, nextLocation.query));
     }
   }
 
@@ -41,20 +53,24 @@ class Show extends React.Component {
             </div>
           </div>
         }
-        {loading &&
-          <div>loading</div>
-        }
         {!loading && !article &&
           <div>not found</div>
         }
       </div>
     );
   }
+
+  static get contextTypes() {
+    return {
+      shareLoading: PropTypes.func
+    };
+  }
 }
 
 Show.propTypes = {
   didMount: PropTypes.bool,
   dispatch: PropTypes.func,
+  location: PropTypes.object,
   params: PropTypes.object,
   article: PropTypes.object,
   loading: PropTypes.bool
@@ -63,7 +79,8 @@ Show.propTypes = {
 function mapStateToProps(state) {
   return {
     didMount: state.app.didMount,
-    article: state.article.article
+    article: state.article.article,
+    loading: state.article.loading
   };
 }
 

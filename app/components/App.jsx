@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { StyleResizable } from 'material-ui/lib/mixins';
-import { didMount } from 'actions/app';
+import { didMount as didMountAction } from 'actions/app';
 import IconButton from 'material-ui/lib/icon-button';
 import FontIcon from 'material-ui/lib/font-icon';
+import Indicator from 'components/Indicator';
 import AppLefftNav from 'components/AppLeftNav';
 import 'scss/main';
 
@@ -15,44 +16,56 @@ const App = React.createClass({
   propTypes: {
     dispatch: PropTypes.func,
     children: PropTypes.node,
-    location: PropTypes.object
+    location: PropTypes.object,
+    didMount: PropTypes.bool,
+    user: PropTypes.object
   },
 
   getInitialState() {
     return {
+      loading: false,
       leftNavOpen: false
     };
   },
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(didMount());
+    dispatch(didMountAction());
+  },
+
+  getChildContext() {
+    return {shareLoading: this.handleShareLoading};
   },
 
   render() {
     const {
       location,
+      didMount,
+      user,
       children
     } = this.props;
     let {
+      loading,
       leftNavOpen
     } = this.state;
 
     const styles = {};
     let docked = false;
-    if (this.isDeviceSize(StyleResizable.statics.Sizes.LARGE)) {
+    if (didMount && this.isDeviceSize(StyleResizable.statics.Sizes.LARGE)) {
       styles.paddingLeft = 256;
       docked = true;
       leftNavOpen = true;
     }
     return (
       <div>
+        <Indicator loading={loading}/>
         <AppLefftNav
           docked={docked}
           location={location}
           onRequestChangeLeftNav={this.handleChangeRequestLeftNav}
           onRequestChangeList={this.handleRequestChangeList}
           open={leftNavOpen}
+          authenticated={user.authenticated}
         />
         <div style={styles}>
           {!docked &&
@@ -64,6 +77,10 @@ const App = React.createClass({
         </div>
       </div>
     );
+  },
+
+  handleShareLoading(loading) {
+    this.setState({ loading });
   },
 
   handleTouchTapLeftIconButton() {
@@ -83,6 +100,10 @@ const App = React.createClass({
     this.setState({
       leftNavOpen: false
     });
+  },
+
+  childContextTypes: {
+    shareLoading: PropTypes.func
   },
 
   contextTypes: {
@@ -114,4 +135,11 @@ class App extends Component {
 }
 */
 
-export default connect()(App);
+function mapStateToProps(state) {
+  return {
+    didMount: state.app.didMount,
+    user: state.user
+  };
+}
+
+export default connect(mapStateToProps)(App);
