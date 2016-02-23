@@ -4,6 +4,7 @@ import { StyleResizable } from 'material-ui/lib/mixins';
 import { didMount as didMountAction } from 'actions/app';
 import IconButton from 'material-ui/lib/icon-button';
 import FontIcon from 'material-ui/lib/font-icon';
+import Indicator from 'components/Indicator';
 import AppLefftNav from 'components/AppLeftNav';
 import 'scss/main';
 
@@ -16,11 +17,13 @@ const App = React.createClass({
     dispatch: PropTypes.func,
     children: PropTypes.node,
     location: PropTypes.object,
-    didMount: PropTypes.bool
+    didMount: PropTypes.bool,
+    user: PropTypes.object
   },
 
   getInitialState() {
     return {
+      loading: false,
       leftNavOpen: false
     };
   },
@@ -28,6 +31,10 @@ const App = React.createClass({
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(didMountAction());
+  },
+
+  getChildContext() {
+    return {shareLoading: this.handleShareLoading};
   },
 
   render() {
@@ -38,6 +45,7 @@ const App = React.createClass({
       children
     } = this.props;
     let {
+      loading,
       leftNavOpen
     } = this.state;
 
@@ -50,6 +58,7 @@ const App = React.createClass({
     }
     return (
       <div>
+        <Indicator loading={loading}/>
         <AppLefftNav
           docked={docked}
           location={location}
@@ -70,6 +79,10 @@ const App = React.createClass({
     );
   },
 
+  handleShareLoading(loading) {
+    this.setState({ loading });
+  },
+
   handleTouchTapLeftIconButton() {
     this.setState({
       leftNavOpen: !this.state.leftNavOpen
@@ -87,6 +100,10 @@ const App = React.createClass({
     this.setState({
       leftNavOpen: false
     });
+  },
+
+  childContextTypes: {
+    shareLoading: PropTypes.func
   },
 
   contextTypes: {

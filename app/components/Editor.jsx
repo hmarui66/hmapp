@@ -19,8 +19,9 @@ class Editor extends React.Component {
   }
 
   componentWillMount() {
-    const { dispatch, params = {} } = this.props;
+    const { dispatch, params = {}, loading = false } = this.props;
     const { id = null } = params;
+    this.context.shareLoading(loading);
     if (id) {
       dispatch(loadArticle(id));
     } else {
@@ -28,8 +29,16 @@ class Editor extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { loading } = this.props;
+    const { loading: nextLoading } = nextProps;
+    if (loading !== nextLoading) {
+      this.context.shareLoading(nextLoading);
+    }
+  }
+
   render() {
-    const { article, loading } = this.props;
+    const { article, loading = false } = this.props;
     const { saving = false, tags = [] } = article || {};
     const articleConfig = { isAll: true, canEdit: false };
     const tagsText = tags.join(' ');
@@ -50,10 +59,7 @@ class Editor extends React.Component {
             </div>
           </div>
         }
-        {loading &&
-          <div>loading</div>
-        }
-        {!article &&
+        {!loading && !article &&
           <div>not found</div>
         }
       </div>
@@ -74,6 +80,12 @@ class Editor extends React.Component {
     const { dispatch, article } = this.props;
     dispatch(saveArticle(article));
   }
+
+  static get contextTypes() {
+    return {
+      shareLoading: PropTypes.func
+    };
+  }
 }
 
 Editor.propTypes = {
@@ -85,7 +97,8 @@ Editor.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    article: state.article.article
+    article: state.article.article,
+    loading: state.article.loading
   };
 }
 

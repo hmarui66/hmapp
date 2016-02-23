@@ -1,14 +1,24 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { routeActions } from 'react-router-redux';
-import classNames from 'classnames/bind';
-
 import { loadList, destroyArticle } from 'actions/article';
 import Article from 'components/Article';
 import Paginate from 'components/Paginate';
+
+import classNames from 'classnames/bind';
 import styles from 'scss/components/viewer';
 
 const cx = classNames.bind(styles);
+
+const style = {
+  container: {
+    position: 'relative'
+  },
+  refresh: {
+    display: 'inline-block',
+    position: 'relative'
+  }
+};
 
 class Viewer extends React.Component {
 
@@ -27,13 +37,17 @@ class Viewer extends React.Component {
     if (!this.props.didMount) {
       return;
     }
-    const { dispatch, location } = this.props;
+    const { dispatch, location, loading = false } = this.props;
+    this.context.shareLoading(loading);
     dispatch(loadList(location.pathname));
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, location } = this.props;
-    const { location: nextLocation } = nextProps;
+    const { dispatch, location, loading } = this.props;
+    const { location: nextLocation, loading: nextLoading } = nextProps;
+    if (loading !== nextLoading) {
+      this.context.shareLoading(nextLoading);
+    }
     if (location.search !== nextLocation.search) {
       dispatch(loadList(location.pathname, nextLocation.query));
     }
@@ -53,10 +67,7 @@ class Viewer extends React.Component {
         {authenticated &&
           <button onClick={this.handleNew}>new</button>
         }
-        <section>
-          {loading &&
-            'loading articles'
-          }
+        <section style={style.container}>
           {!loading && articles.length === 0 &&
             'empty article'
           }
@@ -82,6 +93,12 @@ class Viewer extends React.Component {
     if (confirm('Are you sure you want delete this article?')) {
       dispatch(destroyArticle(id));
     }
+  }
+
+  static get contextTypes() {
+    return {
+      shareLoading: PropTypes.func
+    };
   }
 }
 

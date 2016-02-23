@@ -140,4 +140,3 @@ export function destroyArticle(id) {
     return fetchDelete(resource, { id });
   };
 }
-
