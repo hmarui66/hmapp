@@ -1,0 +1,10 @@
+@import 'mixins.scss';
+@import 'settings.scss';
+
+.article-tag {
+  margin-left: 10px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}

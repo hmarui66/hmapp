@@ -109,7 +109,10 @@ exports.drafts = function(req, res) {
  * Category list
  */
  exports.categories = function(req, res) {
-  Article.aggregate().group({
+  Article.aggregate().match({
+    published: true,
+    category: {'$ne': null}
+  }).group({
     _id: '$category',
     count: {'$sum': 1}
   }).exec(function (err, categories) {
@@ -121,12 +124,22 @@ exports.drafts = function(req, res) {
   });
  };
 
+ /**
+ * List with category condition
+ */
+exports.category = function(req, res) {
+  loadList(req, res, { published: true, category: req.params.category });
+};
+
 /**
  * @todo pre countup
  * Tag list
  */
  exports.tags = function(req, res) {
-  Article.aggregate().unwind('tags').group({
+  Article.aggregate().unwind('tags').match({
+    published: true,
+    tags: {'$ne': null}
+  }).group({
     _id: '$tags',
     count: {'$sum': 1}
   }).exec(function (err, categories) {
@@ -137,3 +150,10 @@ exports.drafts = function(req, res) {
     res.json(categories);
   });
  };
+
+/**
+ * List with tag condition
+ */
+exports.tag = function(req, res) {
+  loadList(req, res, { published: true, tags: req.params.tag });
+};

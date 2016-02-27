@@ -18,21 +18,26 @@ function ensureAuthenticated(req, res, next) {
 
 module.exports = function(app, passport) {
   // user routes
-  app.post('/login', users.postLogin);
-  app.post('/signup', ensureAuthenticated, users.postSignUp);
-  app.get('/logout', users.getLogout);
+  app.post('/api/login', users.postLogin);
+  app.post('/api/signup', ensureAuthenticated, users.postSignUp);
+  app.get('/api/logout', users.getLogout);
 
-  app.get('/article', articles.published);
-  app.get('/article/show/:id', function(req, res) {
+  app.get('/api/article', articles.published);
+  app.get('/api/article/show/:id', function(req, res) {
     articles.show(req, res);
   });
-  app.post('/article', ensureAuthenticated, function(req, res) {
+  app.post('/api/article', ensureAuthenticated, function(req, res) {
     articles.save(req, res);
   });
-  app.delete('/article', ensureAuthenticated, articles.delete);
-  app.get('/article/categories', articles.categories);
-  app.get('/article/tags', articles.tags);
-  app.get('/article/drafts', ensureAuthenticated, articles.drafts);
+  app.delete('/api/article', ensureAuthenticated, articles.delete);
+  app.get('/api/article/categories', articles.published);
+  app.get('/api/article/categories/:category', articles.category);
+  app.get('/api/article/tags', articles.published);
+  app.get('/api/article/tags/:tag', articles.tag);
+  app.get('/api/article/drafts', ensureAuthenticated, articles.drafts);
+
+  app.get('/api/categories', articles.categories);
+  app.get('/api/tags', articles.tags);
 
   // for server side rendering
   app.get('*', function (req, res, next) {

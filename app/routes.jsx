@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route } from 'react-router';
+import { Router, Route, IndexRoute } from 'react-router';
 
 import App from 'components/App';
 import Login from 'components/Login';
@@ -32,18 +32,27 @@ class NotFound extends React.Component {
 }
 
 export default (
-  <Router component={App}>
-    <Route path="/" component={Viewer} />
-    <Route path="show/:id" component={Show} />
-    <Route path="new" component={requireAuthentication(Editor)} />
-    <Route path="edit/:id" component={requireAuthentication(Editor)} />
-    <Route path="categories" component={Categories} />
-    <Route path="tags" component={Tags} />
-    <Route path="archive" component={Archive} />
-    <Route path="search" component={Search} />
-    <Route path="drafts" component={requireAuthentication(Viewer)} />
-    <Route path="login" component={Login} />
-    <Route path="signup" component={requireAuthentication(Signup)} />
-    <Route path="*" component={NotFound}/>
+  <Router>
+    <Route path="/" component={App}>
+      <IndexRoute component={Viewer} />
+      <Route path="show/:id" component={Show} />
+      <Route path="new" component={requireAuthentication(Editor)} />
+      <Route path="edit/:id" component={requireAuthentication(Editor)} />
+      <Route path="categories" component={Categories}>
+        <IndexRoute component={Viewer} />
+        <Route path=":category" component={Viewer} />
+      </Route>
+      <Route path="tags" component={Tags}>
+        <IndexRoute component={Viewer} />
+        <Route path=":tag" component={Viewer} />
+      </Route>
+      <Route path="archive" component={Archive} />
+      <Route path="search" component={Search} />
+      <Route path="drafts" component={requireAuthentication(Viewer)} />
+      <Route path="login" component={Login} />
+      <Route path="signup" component={requireAuthentication(Signup)} />
+      <Route path="*" component={NotFound}/>
+    </Route>
   </Router>
+
 );

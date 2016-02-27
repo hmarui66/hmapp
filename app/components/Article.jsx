@@ -3,7 +3,8 @@ import marked from 'marked';
 import moment from 'moment';
 import { Link } from 'react-router';
 import RaisedButton from 'material-ui/lib/raised-button';
-import FontIcon from 'material-ui/lib/font-icon';
+import Category from 'components/Category';
+import Tag from 'components/Tag';
 import classNames from 'classnames/bind';
 import styles from 'scss/components/article';
 import stylesGm from 'github-markdown-css/github-markdown';
@@ -25,7 +26,6 @@ export default class Article extends React.Component {
     super(props);
     this.onEdit = this.onEdit.bind(this);
     this.onDelete = this.onDelete.bind(this);
-    this.renderTags = this.renderTags.bind(this);
   }
 
   onEdit() {
@@ -36,15 +36,6 @@ export default class Article extends React.Component {
   onDelete() {
     const { article } = this.props;
     this.props.onDelete(article.id);
-  }
-
-  renderTags(tag, key) {
-    return (
-      <Link to={{ pathname: '/', query: { tags: tag } }} className={cx('article-tag')} key={key}>
-        <FontIcon className="material-icons" style={{fontSize: 18}}>local_offer</FontIcon>
-        {tag}
-      </Link>
-    );
   }
 
   render() {
@@ -81,10 +72,10 @@ export default class Article extends React.Component {
                   {(article.category || article.tags) &&
                     <p>
                       {article.category &&
-                        <Link to={{ pathname: '/', query: { category: article.category } }} >{article.category}</Link>
+                        <Category category={article.category}/>
                       }
                       {article.tags && Array.isArray(article.tags) &&
-                        article.tags.map(this.renderTags)
+                        article.tags.map(tag => <Tag tag={tag} key={tag}/>)
                       }
                     </p>
                   }

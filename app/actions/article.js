@@ -1,7 +1,7 @@
 import { fetchGet, fetchPost, fetchDelete } from 'lib/fetch';
 import * as types from 'constants/actionTypes';
 
-const resource = 'article';
+const resource = 'api/article';
 
 function loading() {
   return {
