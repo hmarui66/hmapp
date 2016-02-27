@@ -48,8 +48,8 @@ class Viewer extends React.Component {
     if (loading !== nextLoading) {
       this.context.shareLoading(nextLoading);
     }
-    if (location.search !== nextLocation.search) {
-      dispatch(loadList(location.pathname, nextLocation.query));
+    if (location.pathname !== nextLocation.pathname) {
+      dispatch(loadList(nextLocation.pathname, nextLocation.query));
     }
   }
 

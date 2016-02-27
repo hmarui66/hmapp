@@ -45,7 +45,8 @@ export default function render(req, res) {
   const authenticated = req.isAuthenticated();
 
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
-    const requireAuthComponents = renderProps.components.filter(component => component.redirectPathForLogin);
+    const components = renderProps.components.filter(c => c);
+    const requireAuthComponents = components.filter(component => component.redirectPathForLogin);
 
     if (error) {
       res.status(500).send(error.message);
@@ -64,9 +65,9 @@ export default function render(req, res) {
         context: req
       };
 
-      const components = renderProps.components.filter(component => component.fetchData);
+      const requireFetchComponents = components.filter(component => component.fetchData);
 
-      Promise.all(components.map(component => component.fetchData(locals))).then(() => {
+      Promise.all(requireFetchComponents.map(component => component.fetchData(locals))).then(() => {
         const initialState = store.getState();
         const renderedContent = renderToString(
         <Provider store={store}>

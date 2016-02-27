@@ -45,7 +45,7 @@ export function manualLogin(data) {
   return dispatch => {
     dispatch(beginLogin());
 
-    return fetchPost('login', data).then(res => {
+    return fetchPost('api/login', data).then(res => {
       const action = res.status === 200 ? loginSuccess : loginError;
       return dispatch(action());
     }).catch(error => {
@@ -58,7 +58,7 @@ export function signUp(data) {
   return dispatch => {
     dispatch(beginSignUp());
 
-    return fetchPost('signup', data).then(res => {
+    return fetchPost('api/signup', data).then(res => {
       const action = res.status === 200 ? signUpSuccess : signUpError;
       return dispatch(action());
     }).catch(error => {
@@ -71,7 +71,7 @@ export function logOut() {
   return dispatch => {
     dispatch(beginLogout());
 
-    fetchGet('logout').then(res => {
+    fetchGet('api/logout').then(res => {
       const action = res.status === 200 ? logoutSuccess : logoutError;
       return dispatch(action());
     }).catch(error => {
