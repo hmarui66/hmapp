@@ -1,0 +1,11 @@
+@import 'mixins.scss';
+@import 'settings.scss';
+
+.article-category {
+  text-decoration: none;
+  margin-left: 10px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}

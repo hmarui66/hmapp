@@ -52,8 +52,8 @@ export default class Article extends React.Component {
           <div className={cx('article-inner')}>
             { canEdit &&
               <div className={cx('article-edit')}>
-                <RaisedButton label="edit" onClick={this.onEdit}/>
-                <button onClick={this.onDelete}>destory</button>
+                <RaisedButton label="edit" secondary={true} onClick={this.onEdit}/>
+                <RaisedButton label="destory" primary={true}  onClick={this.onDelete}/>
               </div>
             }
             <header className={cx('article-header')}>

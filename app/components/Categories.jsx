@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { load } from 'actions/category';
-import { Link } from 'react-router';
+import Card from 'material-ui/lib/card/card';
+import CardActions from 'material-ui/lib/card/card-actions';
 import Category from 'components/Category';
 
 class Categories extends React.Component {
@@ -15,6 +16,7 @@ class Categories extends React.Component {
       didMount: PropTypes.bool,
       loading: PropTypes.bool,
       categories: PropTypes.array,
+      params: PropTypes.object,
       dispatch: PropTypes.func,
       children: PropTypes.node,
       location: PropTypes.object
@@ -31,17 +33,27 @@ class Categories extends React.Component {
   }
 
   render() {
-    const { categories, children } = this.props;
-    const styles = {
-      padding: 16
-    };
+    const { categories, children, params } = this.props;
+    const { category: selectedCategory = '' } = params;
+
+    const list = categories.map(
+      category => <Category
+        category={category._id}
+        checked={category._id === selectedCategory}
+        count={category.count}
+        showCount={true}
+        key={category._id}
+      />
+    );
 
     return (
       <main>
         <div data-content>
-          <ul>
-            {categories.map(category => <Category category={category._id} count={category.count} showCount={true} key={category._id}/>)}
-          </ul>
+          <Card>
+            <CardActions>
+              {list}
+            </CardActions>
+          </Card>
           {children}
         </div>
       </main>
