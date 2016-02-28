@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { routeActions } from 'react-router-redux';
 import { loadList, destroyArticle } from 'actions/article';
+import Button from 'material-ui/lib/floating-action-button';
+import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import Article from 'components/Article';
 import Paginate from 'components/Paginate';
 
@@ -65,7 +67,9 @@ class Viewer extends React.Component {
     return (
       <div className={cx('viewer')}>
         {authenticated &&
-          <button onClick={this.handleNew}>new</button>
+          <Button mini={true} secondary={true} onClick={this.handleNew}>
+            <ContentAdd />
+          </Button>
         }
         <section style={style.container}>
           {!loading && articles.length === 0 &&

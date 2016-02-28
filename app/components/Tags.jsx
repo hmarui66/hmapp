@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { load } from 'actions/tag';
-import { Link } from 'react-router';
+import Card from 'material-ui/lib/card/card';
+import CardActions from 'material-ui/lib/card/card-actions';
 import Tag from 'components/Tag';
 
 class Tags extends React.Component {
@@ -15,6 +16,7 @@ class Tags extends React.Component {
       didMount: PropTypes.bool,
       loading: PropTypes.bool,
       tags: PropTypes.array,
+      params: PropTypes.object,
       dispatch: PropTypes.func,
       children: PropTypes.node,
       location: PropTypes.object
@@ -31,17 +33,27 @@ class Tags extends React.Component {
   }
 
   render() {
-    const { tags, children } = this.props;
-    const styles = {
-      padding: 16
-    };
+    const { tags, children, params } = this.props;
+    const { tag: selectedTag = '' } = params;
+
+    const list = tags.map(
+      tag => <Tag
+        tag={tag._id}
+        checked={tag._id === selectedTag}
+        count={tag.count}
+        showCount={true}
+        key={tag._id}
+      />
+    );
 
     return (
       <main>
         <div data-content>
-          <ul>
-            {tags.map(tag => <Tag tag={tag._id} count={tag.count} showCount={true} key={tag._id}/>)}
-          </ul>
+          <Card>
+            <CardActions>
+              {list}
+            </CardActions>
+          </Card>
           {children}
         </div>
       </main>
