@@ -54,6 +54,10 @@ export default class AppLeftNav extends Component {
               leftIcon={<FontIcon className="material-icons">label</FontIcon>}
               primaryText="Tags" value="/tags"
             />
+            <ListItem
+              leftIcon={<FontIcon className="material-icons">directions_run</FontIcon>}
+              primaryText="Runkeeper" value="/runkeeper"
+            />
             {authenticated &&
               <ListItem
                 leftIcon={<FontIcon className="material-icons">drafts</FontIcon>}
