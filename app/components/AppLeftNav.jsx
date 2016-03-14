@@ -4,6 +4,7 @@ import FontIcon from 'material-ui/lib/font-icon';
 import Avatar from 'material-ui/lib/avatar';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
+import Divider from 'material-ui/lib/divider';
 import {SelectableContainerEnhance} from 'material-ui/lib/hoc/selectable-enhance';
 import avatarImage from 'images/avatar.jpg';
 
@@ -15,6 +16,10 @@ const imageStyle = {
 const SelectableList = SelectableContainerEnhance(List);
 
 export default class AppLeftNav extends Component {
+  handleRequestChangeLink(event, value) {
+    window.location = value;
+  }
+
   render() {
     const {
       docked,
@@ -50,8 +55,8 @@ export default class AppLeftNav extends Component {
               primaryText="Tags" value="/tags"
             />
             <ListItem
-              leftIcon={<FontIcon className="material-icons">archive</FontIcon>}
-              primaryText="Archive" value="/archive"
+              leftIcon={<FontIcon className="material-icons">directions_run</FontIcon>}
+              primaryText="Runkeeper" value="/runkeeper"
             />
             {authenticated &&
               <ListItem
@@ -60,7 +65,12 @@ export default class AppLeftNav extends Component {
               />
             }
           </SelectableList>
-
+          <Divider />
+          <SelectableList
+            valueLink={{value: '', requestChange: this.handleRequestChangeLink}}
+          >
+            <ListItem primaryText="GitHub" value="https://github.com/hmarui66" />
+          </SelectableList>
         </LeftNav>
       </div>
     );

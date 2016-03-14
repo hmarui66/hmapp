@@ -9,8 +9,7 @@ import Show from 'components/Show';
 import Editor from 'components/Editor';
 import Categories from 'components/Categories';
 import Tags from 'components/Tags';
-import Archive from 'components/Archive';
-import Search from 'components/Search';
+import Runkeeper from 'components/Runkeeper';
 
 import { requireAuthentication } from 'components/authenticateComponent';
 
@@ -46,8 +45,7 @@ export default (
         <IndexRoute component={Viewer} />
         <Route path=":tag" component={Viewer} />
       </Route>
-      <Route path="archive" component={Archive} />
-      <Route path="search" component={Search} />
+      <Route path="runkeeper" component={Runkeeper} />
       <Route path="drafts" component={requireAuthentication(Viewer)} />
       <Route path="login" component={Login} />
       <Route path="signup" component={requireAuthentication(Signup)} />

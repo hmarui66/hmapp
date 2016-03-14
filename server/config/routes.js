@@ -3,6 +3,7 @@
  */
 var articles = require('../controllers/articles');
 var users = require('../controllers/users');
+var healthgraph = require('../controllers/healthgraph');
 var express = require('express');
 var mongoose = require('mongoose');
 var _ = require('lodash');
@@ -18,9 +19,12 @@ function ensureAuthenticated(req, res, next) {
 
 module.exports = function(app, passport) {
   // user routes
-  app.post('/api/login', users.postLogin);
-  app.post('/api/signup', ensureAuthenticated, users.postSignUp);
-  app.get('/api/logout', users.getLogout);
+  app.post('/auth/login', users.postLogin);
+  app.post('/auth/signup', ensureAuthenticated, users.postSignUp);
+  app.get('/auth/logout', users.getLogout);
+
+  app.get('/auth/healthgraph', healthgraph.authorize);
+  app.get('/auth/healthgraph/callback', healthgraph.callback);
 
   app.get('/api/article', articles.published);
   app.get('/api/article/show/:id', function(req, res) {
@@ -38,6 +42,8 @@ module.exports = function(app, passport) {
 
   app.get('/api/categories', articles.categories);
   app.get('/api/tags', articles.tags);
+
+  app.get('/api/healthgraph/activities', healthgraph.activities);
 
   // for server side rendering
   app.get('*', function (req, res, next) {
