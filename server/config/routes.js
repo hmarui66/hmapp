@@ -43,6 +43,8 @@ module.exports = function(app, passport) {
   app.get('/api/categories', articles.categories);
   app.get('/api/tags', articles.tags);
 
+  app.get('/api/healthgraph/activities', healthgraph.activities);
+
   // for server side rendering
   app.get('*', function (req, res, next) {
     App(req, res);

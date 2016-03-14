@@ -34,7 +34,10 @@ const App = React.createClass({
   },
 
   getChildContext() {
-    return {shareLoading: this.handleShareLoading};
+    return {
+      shareLoading: this.handleShareLoading,
+      didMount: this.props.didMount
+    };
   },
 
   render() {
@@ -103,7 +106,8 @@ const App = React.createClass({
   },
 
   childContextTypes: {
-    shareLoading: PropTypes.func
+    shareLoading: PropTypes.func,
+    didMount: PropTypes.bool
   },
 
   contextTypes: {

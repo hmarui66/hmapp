@@ -1,11 +1,18 @@
 var fetch = require('isomorphic-fetch');
+var secrets = require('./../config/secrets');
 var querystring = require('querystring');
+
+var clientConfig = {
+  host: process.env.HOSTNAME || 'localhost',
+  port: process.env.PORT || '3000'
+};
+var redirectUri = `http://${clientConfig.host}:${clientConfig.port}/auth/healthgraph/callback`;
 
 /**
  * authorize
  */
 exports.authorize = function(req, res) {
-  res.redirect(303, 'https://runkeeper.com/apps/authorize?client_id=e731d1247c7d4c0da7208802a71a2f29&response_type=code&redirect_uri=http://localhost:3000/auth/healthgraph/callback');
+  res.redirect(303, `https://runkeeper.com/apps/authorize?client_id=${secrets.healthGraphClientId}&response_type=code&redirect_uri=${redirectUri}`);
 };
 
 exports.callback = function(req, res) {
@@ -16,9 +23,9 @@ exports.callback = function(req, res) {
   var postData = querystring.stringify({
     grant_type: 'authorization_code',
     code: code,
-    client_id: 'e731d1247c7d4c0da7208802a71a2f29',
-    client_secret: 'a35e74d5c626494fa808d96fd17323e2',
-    redirect_uri: 'http://localhost:3000/auth/healthgraph/callback'
+    client_id: secrets.healthGraphClientId,
+    client_secret: secrets.healthGraphSecret,
+    redirect_uri: redirectUri
   });
   var options = {
     method: 'POST',
@@ -31,21 +38,27 @@ exports.callback = function(req, res) {
   fetch('https://runkeeper.com/apps/token', options)
     .then(response => response.json())
     .then(json => {
-      return fetch('http://api.runkeeper.com/fitnessActivities', {
-        headers: {
-          Authorization: json.token_type + ' ' + json.access_token,
-          Accept: 'application/vnd.com.runkeeper.FitnessActivityFeed+json'
-        }
-      });
-    })
-    .then(response => {
-      return response.json();
-    })
-    .then(json => {
       res.json(json);
     })
     .catch(err => {
       console.log(err);
       res.status(400).send(err);
     });
+};
+
+exports.activities = function(req, res) {
+  fetch('http://api.runkeeper.com/fitnessActivities', {
+    headers: {
+      Authorization: 'Bearer ' + secrets.healthGraphToken,
+      Accept: 'application/vnd.com.runkeeper.FitnessActivityFeed+json'
+    }
+  })
+  .then(response => response.json())
+  .then(json => {
+    res.json(json);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(400).send(err);
+  })
 };
