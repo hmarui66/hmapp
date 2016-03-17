@@ -7,13 +7,8 @@ import Category from 'components/Category';
 
 class Categories extends React.Component {
 
-  static fetchData({ dispatch, context = {} }) {
-    return dispatch(load(context));
-  }
-
   static get propTypes() {
     return {
-      didMount: PropTypes.bool,
       loading: PropTypes.bool,
       categories: PropTypes.array,
       params: PropTypes.object,
@@ -24,9 +19,6 @@ class Categories extends React.Component {
   }
 
   componentWillMount() {
-    if (!this.props.didMount) {
-      return;
-    }
     const { dispatch, loading = false } = this.props;
     this.context.shareLoading(loading);
     dispatch(load());
@@ -70,7 +62,6 @@ class Categories extends React.Component {
 function mapStateToProps(state) {
   const { loading = false, categories = [] } = state.category;
   return {
-    didMount: state.app.didMount,
     loading,
     categories
   };

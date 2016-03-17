@@ -5,10 +5,6 @@ import { routeActions } from 'react-router-redux';
 export function requireAuthentication(Component) {
   class AuthenticateComponent extends React.Component {
 
-    static fetchData(locals) {
-      return Component.fetchData ? Component.fetchData(locals) : null;
-    }
-
     static redirectPathForLogin() {
       return '/login';
     }

@@ -12,7 +12,7 @@ const clientConfig = {
   port: process.env.PORT || '3000'
 };
 
-function renderFullPage(renderedContent, initialState, head={
+function renderFullPage(head={
   title: 'Spending my free time',
   meta: '<meta name="viewport" content="width=device-width, initial-scale=1" />',
   link: '<link rel="stylesheet" href="/assets/styles/main.css"/>'
@@ -29,11 +29,8 @@ function renderFullPage(renderedContent, initialState, head={
         ${head.link}
     </head>
 
-    <div id="app">${renderedContent}</div>
+    <div id="app"></div>
 
-    <script>
-      window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
-    </script>
     <script type="text/javascript" charset="utf-8" src="/assets/app.js"></script>
     </body>
     </html>
@@ -42,50 +39,10 @@ function renderFullPage(renderedContent, initialState, head={
 }
 
 export default function render(req, res) {
-  const authenticated = req.isAuthenticated();
-
-  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
-    const components = renderProps.components.filter(c => c);
-    const requireAuthComponents = components.filter(component => component.redirectPathForLogin);
-
-    if (error) {
-      res.status(500).send(error.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (!authenticated && requireAuthComponents.length > 0) {
-      res.redirect(302, requireAuthComponents[0].redirectPathForLogin());
-    } else if (renderProps) {
-      const store = configureStore({ user: { authenticated } });
-
-      const locals = {
-        path: renderProps.location.pathname,
-        query: renderProps.location.query,
-        params: renderProps.params,
-        dispatch: store.dispatch,
-        context: req
-      };
-
-      const requireFetchComponents = components.filter(component => component.fetchData);
-
-      Promise.all(requireFetchComponents.map(component => component.fetchData(locals))).then(() => {
-        const initialState = store.getState();
-        const renderedContent = renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>);
-        const renderedPage = renderFullPage(renderedContent, initialState, {
-          title: headconfig.title,
-          meta: headconfig.meta,
-          link: headconfig.link
-        });
-        res.status(200).send(renderedPage);
-      }).catch(error => {
-        res.status(500).send(error.message);
-      })
-
-    } else {
-      res.status(404).send('Not Found');
-    }
-
+  const renderedPage = renderFullPage({
+    title: headconfig.title,
+    meta: headconfig.meta,
+    link: headconfig.link
   });
+  res.status(200).send(renderedPage);
 };
