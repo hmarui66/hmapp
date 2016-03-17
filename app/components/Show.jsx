@@ -10,19 +10,11 @@ const cx = classNames.bind(styles);
 
 class Show extends React.Component {
 
-  static fetchData({ dispatch, params = {}, context = {} }) {
-    const { id = null } = params;
-    return dispatch(loadArticle(id, context));
-  }
-
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
-    if (!this.props.didMount) {
-      return;
-    }
     const { dispatch, params = {}, loading = false } = this.props;
     const { id = null } = params;
     this.context.shareLoading(loading);
@@ -68,7 +60,6 @@ class Show extends React.Component {
 }
 
 Show.propTypes = {
-  didMount: PropTypes.bool,
   dispatch: PropTypes.func,
   location: PropTypes.object,
   params: PropTypes.object,
@@ -78,7 +69,6 @@ Show.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    didMount: state.app.didMount,
     article: state.article.article,
     loading: state.article.loading
   };

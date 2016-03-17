@@ -24,10 +24,6 @@ const style = {
 
 class Viewer extends React.Component {
 
-  static fetchData({ dispatch, path = '', query = {}, context = {} }) {
-    return dispatch(loadList(path, query, context));
-  }
-
   constructor(props) {
     super(props);
     this.handleNew = this.handleNew.bind(this);
@@ -36,9 +32,6 @@ class Viewer extends React.Component {
   }
 
   componentWillMount() {
-    if (!this.props.didMount) {
-      return;
-    }
     const { dispatch, location, loading = false } = this.props;
     this.context.shareLoading(loading);
     dispatch(loadList(location.pathname));
@@ -107,7 +100,6 @@ class Viewer extends React.Component {
 }
 
 Viewer.propTypes = {
-  didMount: PropTypes.bool,
   loading: PropTypes.bool,
   user: PropTypes.object,
   articles: PropTypes.array,
@@ -126,7 +118,6 @@ function mapStateToProps(state) {
   } = articles;
 
   return {
-    didMount: state.app.didMount,
     loading: state.article.loading,
     user: state.user,
     articles: docs,

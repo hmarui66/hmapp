@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { StyleResizable } from 'material-ui/lib/mixins';
-import { didMount as didMountAction } from 'actions/app';
 import IconButton from 'material-ui/lib/icon-button';
 import FontIcon from 'material-ui/lib/font-icon';
 import Indicator from 'components/Indicator';
@@ -17,7 +16,6 @@ const App = React.createClass({
     dispatch: PropTypes.func,
     children: PropTypes.node,
     location: PropTypes.object,
-    didMount: PropTypes.bool,
     user: PropTypes.object
   },
 
@@ -28,22 +26,15 @@ const App = React.createClass({
     };
   },
 
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(didMountAction());
-  },
-
   getChildContext() {
     return {
-      shareLoading: this.handleShareLoading,
-      didMount: this.props.didMount
+      shareLoading: this.handleShareLoading
     };
   },
 
   render() {
     const {
       location,
-      didMount,
       user,
       children
     } = this.props;
@@ -54,7 +45,7 @@ const App = React.createClass({
 
     const styles = {};
     let docked = false;
-    if (didMount && this.isDeviceSize(StyleResizable.statics.Sizes.LARGE)) {
+    if (this.isDeviceSize(StyleResizable.statics.Sizes.LARGE)) {
       styles.paddingLeft = 256;
       docked = true;
       leftNavOpen = true;
@@ -106,8 +97,7 @@ const App = React.createClass({
   },
 
   childContextTypes: {
-    shareLoading: PropTypes.func,
-    didMount: PropTypes.bool
+    shareLoading: PropTypes.func
   },
 
   contextTypes: {
@@ -141,7 +131,6 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    didMount: state.app.didMount,
     user: state.user
   };
 }

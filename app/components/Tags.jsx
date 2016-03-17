@@ -7,13 +7,8 @@ import Tag from 'components/Tag';
 
 class Tags extends React.Component {
 
-  static fetchData({ dispatch, context = {} }) {
-    return dispatch(load(context));
-  }
-
   static get propTypes() {
     return {
-      didMount: PropTypes.bool,
       loading: PropTypes.bool,
       tags: PropTypes.array,
       params: PropTypes.object,
@@ -24,9 +19,6 @@ class Tags extends React.Component {
   }
 
   componentWillMount() {
-    if (!this.props.didMount) {
-      return;
-    }
     const { dispatch, loading = false } = this.props;
     this.context.shareLoading(loading);
     dispatch(load());
@@ -70,7 +62,6 @@ class Tags extends React.Component {
 function mapStateToProps(state) {
   const { loading = false, tags = [] } = state.tag;
   return {
-    didMount: state.app.didMount,
     loading,
     tags
   };

@@ -10,9 +10,6 @@ import CardText from 'material-ui/lib/card/card-text';
 class Runkeeper extends React.Component {
 
   componentWillMount() {
-    if (!this.context.didMount) {
-      return;
-    }
     const { activities } = this.props;
     this.context.shareLoading(activities.loading);
   }
@@ -56,8 +53,7 @@ class Runkeeper extends React.Component {
 
   static get contextTypes() {
     return {
-      shareLoading: PropTypes.func,
-      didMount: PropTypes.bool
+      shareLoading: PropTypes.func
     };
   }
 }
